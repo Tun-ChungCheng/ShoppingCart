@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const dovenv = require("dotenv");
 const mongoose = require("mongoose");
-const productRoute = require("./routes").product;
+const productRoutes = require("./routes").product;
+const cartRoutes = require("./routes").cart;
 dovenv.config();
 const app = express();
 
@@ -26,7 +27,8 @@ app.use(morgan("dev")); // HTTP request logger middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/files", express.static("files"));
-app.use("/api/product", productRoute);
+app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.get("/", (req, res) => {
   res.json({

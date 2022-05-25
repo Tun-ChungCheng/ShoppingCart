@@ -1,7 +1,6 @@
-const { type } = require("express/lib/response");
 const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
     require: [true, "Please Include the product name."],
