@@ -26,6 +26,11 @@ mongoose
 app.use(morgan("dev")); // HTTP request logger middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: false, // true : any type || false : string or array
+  })
+);
 app.use("/files", express.static("files"));
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
