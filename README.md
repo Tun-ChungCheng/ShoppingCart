@@ -13,7 +13,7 @@
 <ul>
   <li>Frontend: HTML/CSS/Sass/JavaScript/jQuery/Ajax/React</li>
   <li>Backend: Node.js/Express.js/MongoDB</li>
-  <li>IDE: VScode</li>
+  <li>IDE: Visual Studio Code</li>
 </ul>   
 
 ## Futures
