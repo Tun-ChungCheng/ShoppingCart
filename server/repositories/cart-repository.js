@@ -2,10 +2,9 @@ const Cart = require("../models").cartModel;
 
 exports.cart = async () => {
   const carts = await Cart.find().populate({
-    path: "items.Product",
+    path: "items.productId",
     select: "quantity price total",
   });
-  console.log(carts);
   return carts[0];
 };
 

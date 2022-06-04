@@ -3,7 +3,8 @@ const productRepository = require("../repositories").productRepository;
 
 exports.addItemToCart = async (req, res) => {
   const { productId } = req.body;
-  const { quantity } = Number.parseInt(req.body.quantity);
+  const quantity = Number.parseInt(req.body.quantity, 10);
+
   try {
     let productDetails = await productRepository.productById(productId);
     let cart = await cartRepository.cart();
@@ -13,11 +14,14 @@ exports.addItemToCart = async (req, res) => {
         msg: "Invalid request",
       });
     }
+
     /***** Cart exists *****/
+    console.log(cart);
     if (cart) {
       const indexFound = cart.items.findIndex(
-        (item) => (item.productId.id = productId)
+        (item) => item.productId._id == productId
       );
+
       /***** Product exists but quantity <= 0 *****/
       if (indexFound != -1 && quantity <= 0) {
         cart.items.splice(index, 1);
@@ -28,26 +32,29 @@ exports.addItemToCart = async (req, res) => {
             .map((item) => item.total)
             .reduce((acc, next) => acc + next);
         }
+
         /***** Product exists and quantity > 0 *****/
       } else if (indexFound != -1) {
         cart.items[indexFound].quantity =
           cart.items[indexFound].quantity + quantity;
         cart.items[indexFound].total =
-          cart.item[indexFound].total + quantity * productId.price;
+          cart.items[indexFound].total + quantity * productDetails.price;
         cart.subTotal = cart.items
           .map((item) => item.total)
           .reduce((acc, next) => acc + next);
+
         /***** Product doesn't exist but quantity > 0 *****/
       } else if (quantity > 0) {
         cart.items.push({
           productId: productId,
           quantity: quantity,
-          price: price,
+          price: productDetails.price,
           total: parseInt(quantity * productDetails.price),
         });
         cart.subTotal = cart.items
           .map((item) => item.total)
           .reduce((acc, next) => acc + next);
+
         /***** Product doesn't exist and quantity < 0 *****/
       } else {
         return res.status(400).json({
@@ -68,10 +75,10 @@ exports.addItemToCart = async (req, res) => {
             productId: productId,
             quantity: quantity,
             price: productDetails.price,
-            total: parseInt(productDetails.quantity * productDetails.price),
+            total: parseInt(quantity * productDetails.price),
           },
         ],
-        subTotal: parseInt(productDetails.quantity * productDetails.price),
+        subTotal: parseInt(quantity * productDetails.price),
       };
       let cart = await cartRepository.addItem(cartData);
       res.json(cart);
@@ -88,7 +95,6 @@ exports.addItemToCart = async (req, res) => {
 
 exports.getCart = async (req, res) => {
   try {
-    console.log("0.0");
     let cart = await cartRepository.cart();
     console.log(cart);
 
