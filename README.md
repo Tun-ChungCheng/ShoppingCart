@@ -6,8 +6,8 @@
 <ul>
   <li>Product Function: create/read/update/delete products.</li>
   <li>Cart Function: add/read products.</li>
-  /*<li>Account Function: register/login account.</li>*/
-  /*<li>Order Function: create/read orders.</li>*/
+  <li>Account Function: register/login account.</li>
+  <li>Order Function: create/read orders.</li>
 </ul>
 
 ## Skill/Tools
@@ -18,3 +18,5 @@
 </ul>   
 
 ## Futures
+  <li>Account Function: register/login account.</li>
+  <li>Order Function: create/read orders.</li>
