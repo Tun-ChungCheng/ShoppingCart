@@ -16,7 +16,6 @@ exports.addItemToCart = async (req, res) => {
     }
 
     /***** Cart exists *****/
-    console.log(cart);
     if (cart) {
       const indexFound = cart.items.findIndex(
         (item) => item.productId._id == productId
