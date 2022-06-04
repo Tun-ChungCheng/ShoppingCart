@@ -11,7 +11,7 @@
 
 ## Skill/Tools
 <ul>
-  <li>Frontend: HTML/CSS/Sass/JavaScript/jQuery/Ajax/React</li>
+  <li>Frontend: HTML/CSS/JavaScript/jQuery/Ajax/React</li>
   <li>Backend: Node.js/Express.js/MongoDB</li>
   <li>IDE: Visual Studio Code</li>
 </ul>   
