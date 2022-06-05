@@ -1,11 +1,12 @@
 # ShoppingCart
 ## Introduction
-  MERN project
+  This ShoppingCart is using React.js as front-end framework, and Node.js, MongoDB as backend server. This kind of project is called MERN project, which is one of the most popular way to create modern websites.
   
 ## Functions
 <ul>
   <li>Product Function: create/read/update/delete products.</li>
   <li>Cart Function: add/delete products to cart.</li>  
+  <li>Account Function: register/login account.</li>
 </ul>
 
 ## Skill/Tools
@@ -17,6 +18,6 @@
 
 ## Futures
 <ul>
-  <li>Account Function: register/login account.</li>
+  
   <li>Order Function: create/read orders.</li>
 </ul>
