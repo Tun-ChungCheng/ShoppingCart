@@ -5,7 +5,7 @@
 ## Functions
 <ul>
   <li>Product Function: create/read/update/delete products.</li>
-  <li>Cart Function: add products/read cart.</li>  
+  <li>Cart Function: add/delete products to cart.</li>  
 </ul>
 
 ## Skill/Tools
