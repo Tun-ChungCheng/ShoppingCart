@@ -60,10 +60,10 @@ exports.getProductById = async (req, res) => {
 exports.removeProduct = async (req, res) => {
   try {
     let id = req.params.id;
-    let deletedProduct = await productRepository.removeProduct(id);
+    let product = await productRepository.removeProduct(id);
     res.status(200).json({
       status: true,
-      data: deletedProduct,
+      data: product,
     });
   } catch (err) {
     console.log(err);

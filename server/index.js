@@ -4,8 +4,11 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const dovenv = require("dotenv");
 const mongoose = require("mongoose");
+const passport = require("./config/passport");
 const productRoutes = require("./routes").product;
 const cartRoutes = require("./routes").cart;
+const authRoutes = require("./routes").auth;
+require("./config/passport")(passport);
 dovenv.config();
 const app = express();
 
@@ -34,6 +37,7 @@ app.use(
 app.use("/files", express.static("files"));
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({

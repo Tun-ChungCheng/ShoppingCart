@@ -8,6 +8,7 @@ exports.addItemToCart = async (req, res) => {
   try {
     let productDetails = await productRepository.productById(productId);
     let cart = await cartRepository.cart();
+
     if (!productDetails) {
       res.status(500).json({
         type: "Not Found",
@@ -52,7 +53,7 @@ exports.addItemToCart = async (req, res) => {
         });
         cart.subTotal = cart.items
           .map((item) => item.total)
-          .reduce((acc, next) => acc + next);
+          .reduce((acc, next) => acc + next, 0);
 
         /***** Product doesn't exist and quantity < 0 *****/
       } else {
@@ -95,7 +96,6 @@ exports.addItemToCart = async (req, res) => {
 exports.getCart = async (req, res) => {
   try {
     let cart = await cartRepository.cart();
-    console.log(cart);
 
     if (!cart) {
       return res.status(400).json({
@@ -103,10 +103,46 @@ exports.getCart = async (req, res) => {
         msg: "Cart Not Found",
       });
     }
+
     res.status(200).json({
       status: true,
       data: cart,
     });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      type: "Invalid",
+      msg: "Something Went Wrong",
+      error: err,
+    });
+  }
+};
+
+exports.deleteItemToCart = async (req, res) => {
+  let productId = req.params._id;
+  let cart = await cartRepository.cart();
+
+  try {
+    const indexFound = cart.items.findIndex(
+      (item) => item.productId._id == productId
+    );
+    cart.items.splice(indexFound, 1);
+    /***** Product exist *****/
+    if (indexFound != -1) {
+      cart.subTotal = cart.items
+        .map((item) => item.total)
+        .reduce((acc, next) => acc + next, 0); // The second parameter is for initial value.
+      let data = await cart.save();
+      res.status(200).json({
+        data: data,
+      });
+      /***** Product doesn't exist *****/
+    } else {
+      res.status(400).json({
+        type: "Invalid",
+        msg: "Cart Not Found.",
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(400).json({
