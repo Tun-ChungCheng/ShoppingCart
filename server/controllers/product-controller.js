@@ -1,11 +1,18 @@
 const productRepository = require("../repositories").productRepository;
+const productValidation = require("../config/validation").productValidation;
+const Product = require("../models").productModel;
 
 exports.createProduct = async (req, res) => {
+  const { error } = productValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  if (req.user.isCustomer())
+    return res.status(400).send("Only Seller can post new product.");
   try {
     let payload = {
       name: req.body.name,
       price: req.body.price,
       image: req.file.path,
+      seller: req.user._id,
     };
     let product = await productRepository.createProduct({
       ...payload,
@@ -43,7 +50,6 @@ exports.getProductById = async (req, res) => {
   try {
     let id = req.params.id;
     let product = await productRepository.productById(id);
-    console.log(id, product);
     res.status(200).json({
       status: true,
       data: product,
@@ -57,7 +63,29 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-exports.removeProduct = async (req, res) => {
+exports.updateProduct = async (req, res) => {
+  const { error } = productValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    let { id } = req.params;
+    let product = await productRepository.productById(id);
+    if (product.seller.equals(req.user._id) || req.user.isAdmin()) {
+      let data = await productRepository.renewProduct(id, req.body);
+      res.status(200).json({
+        status: true,
+        data: data,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: true,
+      error: err,
+    });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
   try {
     let id = req.params.id;
     let product = await productRepository.removeProduct(id);

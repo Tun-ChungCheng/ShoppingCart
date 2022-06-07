@@ -1,16 +1,16 @@
 const express = require("express");
+const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const dovenv = require("dotenv");
+dovenv.config();
 const mongoose = require("mongoose");
-const passport = require("./config/passport");
 const productRoutes = require("./routes").product;
 const cartRoutes = require("./routes").cart;
 const authRoutes = require("./routes").auth;
+const passport = require("passport");
 require("./config/passport")(passport);
-dovenv.config();
-const app = express();
 
 /***** Connect To Mongo DB Altas *****/
 mongoose
@@ -35,9 +35,13 @@ app.use(
   })
 );
 app.use("/files", express.static("files"));
-app.use("/api/product", productRoutes);
+app.use("/api/user", authRoutes);
+app.use(
+  "/api/product",
+  passport.authenticate("jwt", { session: false }),
+  productRoutes
+);
 app.use("/api/cart", cartRoutes);
-app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({
