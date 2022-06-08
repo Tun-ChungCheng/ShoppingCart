@@ -70,10 +70,10 @@ exports.updateProduct = async (req, res) => {
     let { id } = req.params;
     let product = await productRepository.productById(id);
     if (product.seller.equals(req.user._id) || req.user.isAdmin()) {
-      let data = await productRepository.renewProduct(id, req.body);
+      let renewProduct = await productRepository.renewProduct(id, req.body);
       res.status(200).json({
         status: true,
-        data: data,
+        data: renewProduct,
       });
     }
   } catch (err) {

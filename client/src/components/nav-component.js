@@ -1,6 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AuthService from "../services/auth.service";
+
 const NavComponent = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    AuthService.logout();
+    window.alert("Logout successfully, now you are redirect to the homepage.");
+    navigate("/homepage");
+  };
+
   return (
     <div>
       <nav>
@@ -24,7 +33,7 @@ const NavComponent = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">
+                  <Link onClick={handleLogout} className="nav-link" to="/">
                     Logout
                   </Link>
                 </li>
