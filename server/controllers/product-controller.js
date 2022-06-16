@@ -7,6 +7,7 @@ exports.createProduct = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   if (req.user.isCustomer())
     return res.status(400).send("Only Seller can post new product.");
+
   try {
     let payload = {
       name: req.body.name,

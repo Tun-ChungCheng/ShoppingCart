@@ -1,31 +1,31 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import CourseService from "../services/course.service";
+import { useNavigate } from "react-router-dom";
+import ProductService from "../services/product.service";
 
 const PostCourseComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
-  let [title, setTitle] = useState("");
-  let [description, setDescription] = useState("");
+  let [name, setName] = useState("");
+  let [image, setImage] = useState("");
   let [price, setPrice] = useState(0);
   let [message, setMessage] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleTakeToLogin = () => {
-    history.push("/login");
+    navigate("/login");
   };
-  const handleChangeTitle = (e) => {
-    setTitle(e.target.value);
+  const handleChangeName = (e) => {
+    setName(e.target.value);
   };
-  const handleChangeDesciption = (e) => {
-    setDescription(e.target.value);
+  const handleChangeImage = (e) => {
+    setImage(e.target.value);
   };
   const handleChangePrice = (e) => {
     setPrice(e.target.value);
   };
-  const postCourse = () => {
-    CourseService.post(title, description, price)
+  const postProduct = () => {
+    console.log(name, price, image);
+    ProductService.post(name, price, image)
       .then(() => {
-        window.alert("New course has been created.");
-        history.push("/course");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.response);
@@ -35,40 +35,36 @@ const PostCourseComponent = (props) => {
 
   return (
     <div style={{ padding: "3rem" }}>
-      {!currentUser && (
-        <div>
-          <p>You must login first before posting a new course.</p>
-          <button
-            className="btn btn-primary btn-lg"
-            onClick={handleTakeToLogin}
-          >
-            Take me to login page.
-          </button>
-        </div>
-      )}
-      {currentUser && currentUser.user.role !== "instructor" && (
-        <div>
-          <p>Only instrcutors can post new courses.</p>
-        </div>
-      )}
-      {currentUser && currentUser.user.role == "instructor" && (
+      {!currentUser && <div>{handleTakeToLogin}</div>}
+      {currentUser.user.role === "customer" && <div>{handleTakeToLogin}</div>}
+      {currentUser && currentUser.user.role === "seller" && (
         <div className="form-group">
-          <label for="exampleforTitle">Title</label>
+          <label for="exampleforTitle">Name</label>
           <input
             name="title"
             type="text"
             className="form-control"
             id="exampleforTitle"
-            onChange={handleChangeTitle}
+            onChange={handleChangeName}
           />
           <br />
-          <label for="exampleforContent">Content</label>
-          <textarea
+          <label for="exampleforContent">Image</label>
+          {/* <textarea
             className="form-control"
             id="exampleforContent"
             aria-describedby="emailHelp"
             name="content"
-            onChange={handleChangeDesciption}
+            onChange={handleChangeImage}
+          /> */}
+          <br />
+          <label class="form-label" for="customFile">
+            Default file input example
+          </label>
+          <input
+            type="file"
+            class="form-control"
+            id="customFile"
+            onChange={handleChangeImage}
           />
           <br />
           <label for="exampleforPrice">Price</label>
@@ -80,7 +76,7 @@ const PostCourseComponent = (props) => {
             onChange={handleChangePrice}
           />
           <br />
-          <button className="btn btn-primary" onClick={postCourse}>
+          <button className="btn btn-primary" onClick={postProduct}>
             Submit
           </button>
           <br />

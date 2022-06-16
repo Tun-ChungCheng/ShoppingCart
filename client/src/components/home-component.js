@@ -1,81 +1,100 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ProductService from "../services/product.service";
 
 const HomeComponent = () => {
+  let [productData, setProductData] = useState();
+  useEffect(() => {
+    console.log("using effect.");
+    ProductService.get()
+      .then((data) => {
+        setProductData(data.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
-    <main>
+    <div>
+      {/* <!-- Carousel wrapper --> */}
       <div
-        id="carouselExampleDark"
-        class="carousel carousel-dark slide"
-        data-bs-ride="carousel"
+        id="carouselBasicExample"
+        class="carousel slide carousel-fade"
+        data-mdb-ride="carousel"
       >
+        {/* <!-- Indicators --> */}
         <div class="carousel-indicators">
           <button
             type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="0"
+            data-mdb-target="#carouselBasicExample"
+            data-mdb-slide-to="0"
             class="active"
             aria-current="true"
             aria-label="Slide 1"
           ></button>
           <button
             type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="1"
+            data-mdb-target="#carouselBasicExample"
+            data-mdb-slide-to="1"
             aria-label="Slide 2"
           ></button>
           <button
             type="button"
-            data-bs-target="#carouselExampleDark"
-            data-bs-slide-to="2"
+            data-mdb-target="#carouselBasicExample"
+            data-mdb-slide-to="2"
             aria-label="Slide 3"
           ></button>
         </div>
+
+        {/* <!-- Inner --> */}
         <div class="carousel-inner">
-          <div class="carousel-item active" data-bs-interval="10000">
+          {/* <!-- Single item --> */}
+          <div class="carousel-item active">
             <img
-              src="https://source.unsplash.com/random/1200x300/?buy"
+              src="https://source.unsplash.com/random/1200x300/?coupon"
               class="d-block w-100"
-              alt="..."
+              alt="coupon"
             />
             <div class="carousel-caption d-none d-md-block">
-              {/* <h5>First slide label</h5>
-              <p>
-                Some representative placeholder content for the first slide.
-              </p> */}
+              <h5>1</h5>
+              <p></p>
             </div>
           </div>
-          <div class="carousel-item" data-bs-interval="2000">
-            <img
-              src="https://source.unsplash.com/random/1200x300/?products"
-              class="d-block w-100"
-              alt="..."
-            />
-            <div class="carousel-caption d-none d-md-block">
-              {/* <h5>Second slide label</h5>
-              <p>
-                Some representative placeholder content for the second slide.
-              </p> */}
-            </div>
-          </div>
+
+          {/* <!-- Single item --> */}
           <div class="carousel-item">
             <img
               src="https://source.unsplash.com/random/1200x300/?shopping"
               class="d-block w-100"
-              alt="..."
+              alt="shopping"
             />
             <div class="carousel-caption d-none d-md-block">
-              {/* <h5>Third slide label</h5>
-              <p>
-                Some representative placeholder content for the third slide.
-              </p> */}
+              <h5>2</h5>
+              <p></p>
+            </div>
+          </div>
+
+          {/* <!-- Single item --> */}
+          <div class="carousel-item">
+            <img
+              src="https://source.unsplash.com/random/1200x300/?products"
+              class="d-block w-100"
+              alt="products"
+            />
+            <div class="carousel-caption d-none d-md-block">
+              <h5>3</h5>
+              <p></p>
             </div>
           </div>
         </div>
+        {/* <!-- Inner --> */}
+
+        {/* <!-- Controls --> */}
         <button
           class="carousel-control-prev"
           type="button"
-          data-bs-target="#carouselExampleDark"
-          data-bs-slide="prev"
+          data-mdb-target="#carouselBasicExample"
+          data-mdb-slide="prev"
         >
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
@@ -83,65 +102,35 @@ const HomeComponent = () => {
         <button
           class="carousel-control-next"
           type="button"
-          data-bs-target="#carouselExampleDark"
-          data-bs-slide="next"
+          data-mdb-target="#carouselBasicExample"
+          data-mdb-slide="next"
         >
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
+      {/* <!-- Carousel wrapper --> */}
 
-      <div class="container py-4">
-        <div class="p-5 mb-4 bg-light rounded-3">
-          <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Learning System</h1>
-            <p class="col-md-8 fs-4">
-              This system is using React.js as front-end framework, and Node.js,
-              MongoDB as backend server. This kind of project is called MERN
-              project, which is one of the most popular way to create modern
-              websites.
-            </p>
-            <button class="btn btn-primary btn-lg" type="button">
-              See how it works.
-            </button>
-          </div>
-        </div>
-
-        <div class="row align-items-md-stretch">
-          <div class="col-md-6">
-            <div class="h-100 p-5 text-white bg-dark rounded-3">
-              <h2>As a student</h2>
-              <p>
-                Students can register in courses they like. This website is for
-                practice purpose only, so please do not provide any personal
-                information, such as credit card numbers.
-              </p>
-              <button class="btn btn-outline-light" type="button">
-                Login or Register Now
-              </button>
+      {productData && (
+        <div style={{ display: "flex", padding: "1rem" }}>
+          {productData.map((product) => (
+            <div
+              className="card"
+              style={{
+                width: "25rem",
+                margin: "2rem",
+              }}
+            >
+              <div className="card-body">
+                <h5 className="card-title">{product.name}</h5>
+                <p className="card-text">{product.price}</p>
+                <img src={product.image} />
+              </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="h-100 p-5 bg-light border rounded-3">
-              <h2>As an Instructor</h2>
-              <p>
-                You can become an instructor by registering as one, and start
-                making online courses. This website is for practice purpose
-                only, so please do not provide any personal information, such as
-                credit card numbers.
-              </p>
-              <button class="btn btn-outline-secondary" type="button">
-                Login or Register Now
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
-
-        <footer class="pt-3 mt-4 text-muted border-top">
-          &copy; 2021 Wilson Ren
-        </footer>
-      </div>
-    </main>
+      )}
+    </div>
   );
 };
 

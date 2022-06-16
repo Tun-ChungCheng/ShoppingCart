@@ -2,12 +2,13 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
-const NavComponent = () => {
+const NavComponent = (props) => {
+  let { currentUser, setCurrentUser } = props;
   const navigate = useNavigate();
   const handleLogout = () => {
     AuthService.logout();
-    window.alert("Logout successfully, now you are redirect to the homepage.");
-    navigate("/homepage");
+    setCurrentUser(null);
+    navigate("/");
   };
 
   return (
@@ -22,41 +23,48 @@ const NavComponent = () => {
                     Home
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Register
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link onClick={handleLogout} className="nav-link" to="/">
-                    Logout
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/course">
-                    Course
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/postCourse">
-                    Post Course
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/enroll">
-                    Enroll
-                  </Link>
-                </li>
+                {!currentUser && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register">
+                      Register
+                    </Link>
+                  </li>
+                )}
+                {!currentUser && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  </li>
+                )}
+                {currentUser && (
+                  <li className="nav-item">
+                    <Link onClick={handleLogout} className="nav-link" to="/">
+                      Logout
+                    </Link>
+                  </li>
+                )}
+                {currentUser && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+                )}
+                {currentUser && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/cart">
+                      Cart
+                    </Link>
+                  </li>
+                )}
+                {currentUser && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/postProduct">
+                      Post Product
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
