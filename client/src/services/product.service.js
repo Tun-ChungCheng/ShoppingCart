@@ -2,7 +2,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/product";
 
 class ProductService {
-  post(name, price, image, seller) {
+  post(name, price, image) {
     let token;
     if (localStorage.getItem("user")) {
       token = JSON.parse(localStorage.getItem("user")).token;
@@ -12,7 +12,7 @@ class ProductService {
 
     return axios.post(
       API_URL,
-      { name, price, image, seller },
+      { name, price, image },
       {
         headers: {
           Authorization: token,

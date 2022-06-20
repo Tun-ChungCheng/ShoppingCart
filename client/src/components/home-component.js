@@ -4,7 +4,6 @@ import ProductService from "../services/product.service";
 const HomeComponent = () => {
   let [productData, setProductData] = useState();
   useEffect(() => {
-    console.log("using effect.");
     ProductService.get()
       .then((data) => {
         setProductData(data.data.data);
@@ -64,9 +63,9 @@ const HomeComponent = () => {
           {/* <!-- Single item --> */}
           <div class="carousel-item">
             <img
-              src="https://source.unsplash.com/random/1200x300/?shopping"
+              src="https://source.unsplash.com/random/1200x300/?money"
               class="d-block w-100"
-              alt="shopping"
+              alt="money"
             />
             <div class="carousel-caption d-none d-md-block">
               <h5>2</h5>
@@ -112,19 +111,42 @@ const HomeComponent = () => {
       {/* <!-- Carousel wrapper --> */}
 
       {productData && (
-        <div style={{ display: "flex", padding: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
           {productData.map((product) => (
             <div
               className="card"
               style={{
-                width: "25rem",
-                margin: "2rem",
+                width: "18rem",
+                margin: "1rem",
               }}
             >
-              <div className="card-body">
+              <div
+                className="card-body"
+                style={{ margin: "1rem", justifyItems: "center" }}
+              >
                 <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.price}</p>
-                <img src={product.image} />
+                <p className="card-text">${product.price}</p>
+                <img
+                  src={"http://localhost:8080/" + product.image}
+                  alt="product"
+                  style={{
+                    width: "10rem",
+                    borderRadius: "10px",
+                  }}
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  style={{ margin: "1rem" }}
+                >
+                  Add to cart
+                </button>
               </div>
             </div>
           ))}

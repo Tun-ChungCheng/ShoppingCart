@@ -7,13 +7,13 @@ exports.createProduct = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   if (req.user.isCustomer())
     return res.status(400).send("Only Seller can post new product.");
-
   try {
+    console.log(req);
     let payload = {
       name: req.body.name,
       price: req.body.price,
       image: req.file.path,
-      seller: req.user._id,
+      //seller: req.user._id,
     };
     let product = await productRepository.createProduct({
       ...payload,

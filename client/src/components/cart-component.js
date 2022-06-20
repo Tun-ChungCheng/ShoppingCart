@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const CartComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!currentUser && currentUser.user.role == "seller") {

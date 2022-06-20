@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const dovenv = require("dotenv");
 dovenv.config();
+const path = require("path");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes").product;
 const cartRoutes = require("./routes").cart;
@@ -26,15 +27,20 @@ mongoose
   });
 
 /***** Middleware *****/
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200, // For legacy browser support
+  methods: "GET, POST, PUT, DELETE",
+};
+app.use(cors(corsOptions));
 app.use(morgan("dev")); // HTTP request logger middleware
-app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: false, // true : any type || false : string or array
   })
 );
-app.use("/files", express.static("files"));
+app.use("/files", express.static(path.join(__dirname, "/files")));
 app.use("/api/user", authRoutes);
 app.use(
   "/api/product",
