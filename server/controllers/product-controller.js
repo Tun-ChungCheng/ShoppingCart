@@ -9,6 +9,7 @@ exports.createProduct = async (req, res) => {
     return res.status(400).send("Only Seller can post new product.");
   try {
     console.log(req);
+    console.log("lol");
     let payload = {
       name: req.body.name,
       price: req.body.price,

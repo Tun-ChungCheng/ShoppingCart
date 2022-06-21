@@ -20,9 +20,9 @@ const loginValidation = (data) => {
 
 const productValidation = (data) => {
   const schema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    price: Joi.number().min(1).max(9999999999).required(),
-    image: Joi.string().required(),
+    //name: Joi.string().min(3).max(50).required(),
+    //price: Joi.number().min(1).max(9999999999).required(),
+    //image: Joi.string().required(),
   });
   return schema.validate(data);
 };
