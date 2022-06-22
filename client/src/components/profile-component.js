@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 const ProfileComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  });
+
   return (
     <div style={{ padding: "3rem" }}>
-      {!currentUser && (
-        <div>You must login first before getting your profile.</div>
-      )}
       {currentUser && (
         <div>
           <h1>In profile page.</h1>

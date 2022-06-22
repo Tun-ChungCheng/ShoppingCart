@@ -13,6 +13,8 @@ class ProductService {
     return axios.post(API_URL, payload, {
       headers: {
         "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
         Authorization: token,
       },
     });

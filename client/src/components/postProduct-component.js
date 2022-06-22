@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductService from "../services/product.service";
 
@@ -9,9 +9,11 @@ const PostCourseComponent = (props) => {
   let [price, setPrice] = useState(0);
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const handleTakeToLogin = () => {
-    navigate("/login");
-  };
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  });
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -25,15 +27,12 @@ const PostCourseComponent = (props) => {
     setImage(e.target.files[0]);
   };
 
-  const handleOnSubmit = (e) => {
+  const postProduct = (e) => {
     e.preventDefault();
     const payload = new FormData();
     payload.append("name", name);
-    payload.append("price", price);
     payload.append("image", image);
-    for (var key of payload.entries()) {
-      console.log(key[0] + ", " + key[1]);
-    }
+    payload.append("price", price);
     ProductService.post(payload)
       .then(() => {
         navigate("/");
@@ -46,18 +45,17 @@ const PostCourseComponent = (props) => {
 
   return (
     <div style={{ padding: "3rem" }}>
-      {!currentUser && <div>{handleTakeToLogin}</div>}
-      {currentUser.user.role === "customer" && <div>{handleTakeToLogin}</div>}
       {currentUser && currentUser.user.role === "seller" && (
         <div className="form-group">
           <form
-            onSubmit={handleOnSubmit}
+            onSubmit={postProduct}
             method="post"
             enctype="multipart/form-data"
           >
             <label>Name</label>
             <input
               type="text"
+              name="name"
               className="form-control"
               onChange={handleChangeName}
             />

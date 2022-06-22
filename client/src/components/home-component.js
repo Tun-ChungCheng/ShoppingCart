@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductService from "../services/product.service";
+import CartService from "../services/cart.service";
 
 const HomeComponent = () => {
   let [productData, setProductData] = useState();
@@ -7,11 +8,16 @@ const HomeComponent = () => {
     ProductService.get()
       .then((data) => {
         setProductData(data.data.data);
+        console.log(data.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const addToCart = () => {
+    CartService.post();
+  };
 
   return (
     <div>
@@ -137,10 +143,13 @@ const HomeComponent = () => {
                   alt="product"
                   style={{
                     width: "10rem",
+                    height: "10rem",
+                    objectFit: "cover",
                     borderRadius: "10px",
                   }}
                 />
                 <button
+                  onClick={addToCart}
                   type="button"
                   className="btn btn-primary"
                   style={{ margin: "1rem" }}

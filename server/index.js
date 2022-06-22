@@ -27,13 +27,6 @@ mongoose
   });
 
 /***** Middleware *****/
-// const corsOptions = {
-//   origin: "http://localhost:3000",
-//   optionsSuccessStatus: 200, // For legacy browser support
-//   methods: "GET, POST, PUT, DELETE",
-// };
-//app.use(cors(corsOptions));
-
 app.use(cors());
 app.use(morgan("dev")); // HTTP request logger middleware
 app.use(bodyParser.json());

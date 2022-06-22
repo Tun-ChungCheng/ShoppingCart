@@ -7,7 +7,6 @@ router.post(
   multerInstance.upload.single("image"),
   productController.createProduct
 );
-
 router.get("/", productController.getProducts);
 router.get("/:id", productController.getProductById);
 router.patch("/:id", productController.updateProduct);

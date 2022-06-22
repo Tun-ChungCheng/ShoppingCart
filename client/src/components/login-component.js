@@ -61,15 +61,14 @@ const LoginComponent = (props) => {
       </div>
 
       <br />
-      {/* <!-- Login buttons --> */}
-      <div className="form-group">
-        <button onClick={handleLogin} className="btn btn-primary btn-block">
+      <div class="text-center">
+        {/* <!-- Login buttons --> */}
+        <button onClick={handleLogin} className="btn btn-primary">
           <span>Login</span>
         </button>
-      </div>
 
-      <div class="text-center">
-        <p>or sign up with:</p>
+        <br />
+        <br />
         <button type="button" class="btn btn-primary btn-floating mx-1">
           <i class="fab fa-facebook-f"></i>
         </button>
