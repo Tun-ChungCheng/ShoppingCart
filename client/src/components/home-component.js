@@ -6,9 +6,8 @@ const HomeComponent = () => {
   let [productData, setProductData] = useState();
   useEffect(() => {
     ProductService.get()
-      .then((data) => {
-        setProductData(data.data.data);
-        console.log(data.data.data);
+      .then((products) => {
+        setProductData(products.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -128,16 +127,16 @@ const HomeComponent = () => {
             <div
               className="card"
               style={{
-                width: "18rem",
+                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+                maxWidth: "300px",
                 margin: "1rem",
+                textAlign: "center",
               }}
             >
               <div
                 className="card-body"
                 style={{ margin: "1rem", justifyItems: "center" }}
               >
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">${product.price}</p>
                 <img
                   src={"http://localhost:8080/" + product.image}
                   alt="product"
@@ -148,11 +147,20 @@ const HomeComponent = () => {
                     borderRadius: "10px",
                   }}
                 />
+
+                <h5 className="card-title">{product.name}</h5>
+
+                <p
+                  className="card-text"
+                  style={{ color: "grey", fontSize: "18px" }}
+                >
+                  ${product.price}
+                </p>
+
                 <button
                   onClick={addToCart}
                   type="button"
                   className="btn btn-primary"
-                  style={{ margin: "1rem" }}
                 >
                   Add to cart
                 </button>

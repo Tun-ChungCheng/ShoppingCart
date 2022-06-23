@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductService from "../services/product.service";
+import CartService from "../services/cart.service";
 
 const CartComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
-  let [productData, setProductData] = useState();
+  let [cartData, setCartData] = useState([]);
+  let [itemQuantity, setItemQuantity] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!currentUser) {
       navigate("/login");
@@ -13,9 +16,10 @@ const CartComponent = (props) => {
   });
 
   useEffect(() => {
-    ProductService.get()
+    CartService.get()
       .then((data) => {
-        setProductData(data.data.data);
+        setItemQuantity(data.data.data.items.length);
+        setCartData(data.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -52,13 +56,12 @@ const CartComponent = (props) => {
   //       });
   //   }
   // }, []);
-  {
-    /* {currentUser && currentUser.user.role == "customer" && (
+  /* {currentUser && currentUser.user.role == "customer" && (
         <div>
           <h1>Welcome to customer's Course page.</h1>
         </div>
       )} */
-  }
+
   return (
     <div>
       <section class="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
@@ -72,12 +75,14 @@ const CartComponent = (props) => {
                       <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
                           <p class="mb-1">Shopping cart</p>
-                          <p class="mb-0">You have 4 items in your cart</p>
+                          <p class="mb-0">
+                            You have {itemQuantity} items in your cart
+                          </p>
                         </div>
                       </div>
 
-                      {productData &&
-                        productData.map((product) => (
+                      {itemQuantity !== 0 &&
+                        cartData.map((product) => (
                           <div class="card mb-3">
                             <div class="card-body">
                               <div class="d-flex justify-content-between">
@@ -178,7 +183,6 @@ const CartComponent = (props) => {
                                     class="form-control form-control-lg"
                                     placeholder="MM/YYYY"
                                     size="7"
-                                    //id="exp"
                                     minlength="7"
                                     maxlength="7"
                                   />
@@ -210,17 +214,17 @@ const CartComponent = (props) => {
 
                           <div class="d-flex justify-content-between">
                             <p class="mb-2">Subtotal</p>
-                            <p class="mb-2">$4798.00</p>
+                            <p class="mb-2">${cartData.subTotal}</p>
                           </div>
 
                           <div class="d-flex justify-content-between">
                             <p class="mb-2">Shipping</p>
-                            <p class="mb-2">$20.00</p>
+                            <p class="mb-2">$20</p>
                           </div>
 
                           <div class="d-flex justify-content-between mb-4">
                             <p class="mb-2">Total(Incl. taxes)</p>
-                            <p class="mb-2">$4818.00</p>
+                            <p class="mb-2">${cartData.subTotal + 20}</p>
                           </div>
 
                           <button
@@ -228,7 +232,7 @@ const CartComponent = (props) => {
                             class="btn btn-info btn-block btn-lg"
                           >
                             <div class="d-flex justify-content-between">
-                              <span>$4818.00</span>
+                              <span>${cartData.subTotal + 20}</span>
                               <span>
                                 Checkout{" "}
                                 <i class="fas fa-long-arrow-alt-right ms-2"></i>

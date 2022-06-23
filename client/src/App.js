@@ -8,6 +8,7 @@ import ProfileComponent from "./components/profile-component";
 import AuthService from "./services/auth.service";
 import CartComponent from "./components/cart-component";
 import PostProductComponent from "./components/postProduct-component";
+import FooterComponent from "./components/footer-component";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -65,6 +66,7 @@ function App() {
           }
         />
       </Routes>
+      <FooterComponent />
     </div>
   );
 }
