@@ -5,7 +5,8 @@ import CartService from "../services/cart.service";
 
 const CartComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
-  let [cartData, setCartData] = useState([]);
+  let [items, setItems] = useState([]);
+  let [subTotal, setSubTotal] = useState(0);
   let [itemQuantity, setItemQuantity] = useState([]);
   const navigate = useNavigate();
 
@@ -17,14 +18,27 @@ const CartComponent = (props) => {
 
   useEffect(() => {
     CartService.get()
-      .then((data) => {
-        setItemQuantity(data.data.data.items.length);
-        setCartData(data.data.data);
+      .then((cart) => {
+        console.log(cart.data.data);
+        setItemQuantity(cart.data.data.items.length);
+        setItems(cart.data.data.items);
+        setSubTotal(cart.data.data.subTotal);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const deleteItemHandler = (e) => {
+    console.log(e.target.id);
+    CartService.delete(e.target.id)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // let [courseData, setCourseData] = useState(null);
   // useEffect(() => {
@@ -76,13 +90,13 @@ const CartComponent = (props) => {
                         <div>
                           <p class="mb-1">Shopping cart</p>
                           <p class="mb-0">
-                            You have {itemQuantity} items in your cart
+                            {/* You have {itemQuantity} items in your cart */}
                           </p>
                         </div>
                       </div>
 
                       {itemQuantity !== 0 &&
-                        cartData.map((product) => (
+                        items.map((item) => (
                           <div class="card mb-3">
                             <div class="card-body">
                               <div class="d-flex justify-content-between">
@@ -90,7 +104,7 @@ const CartComponent = (props) => {
                                   <div>
                                     <img
                                       src={
-                                        "http://localhost:8080/" + product.image
+                                        "http://localhost:8080/" + item.image
                                       }
                                       class="img-fluid rounded-3"
                                       alt="Shopping item"
@@ -98,20 +112,28 @@ const CartComponent = (props) => {
                                     />
                                   </div>
                                   <div class="ms-3">
-                                    <h5>{product.name}</h5>
-                                    <p class="small mb-0">256GB, Navy Blue</p>
+                                    <h5>{item.name}</h5>
+                                    {/* <p class="small mb-0">256GB, Navy Blue</p> */}
                                   </div>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
                                   <div style={{ width: "50px" }}>
-                                    <h5 class="fw-normal mb-0">2</h5>
+                                    <h5 class="fw-normal mb-0">
+                                      {item.quantity}
+                                    </h5>
                                   </div>
                                   <div style={{ width: "80px" }}>
-                                    <h5 class="mb-0">${product.price}</h5>
+                                    <h5 class="mb-0">
+                                      ${item.price * item.quantity}
+                                    </h5>
                                   </div>
-                                  <a href="#!" style={{ color: "#cecece" }}>
+                                  <div
+                                    id={item._id}
+                                    onClick={deleteItemHandler}
+                                    style={{ color: "#cecece" }}
+                                  >
                                     <i class="fas fa-trash-alt"></i>
-                                  </a>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -214,7 +236,7 @@ const CartComponent = (props) => {
 
                           <div class="d-flex justify-content-between">
                             <p class="mb-2">Subtotal</p>
-                            <p class="mb-2">${cartData.subTotal}</p>
+                            <p class="mb-2">${subTotal}</p>
                           </div>
 
                           <div class="d-flex justify-content-between">
@@ -224,7 +246,7 @@ const CartComponent = (props) => {
 
                           <div class="d-flex justify-content-between mb-4">
                             <p class="mb-2">Total(Incl. taxes)</p>
-                            <p class="mb-2">${cartData.subTotal + 20}</p>
+                            <p class="mb-2">${subTotal + 20}</p>
                           </div>
 
                           <button
@@ -232,7 +254,7 @@ const CartComponent = (props) => {
                             class="btn btn-info btn-block btn-lg"
                           >
                             <div class="d-flex justify-content-between">
-                              <span>${cartData.subTotal + 20}</span>
+                              <span>${subTotal + 20}</span>
                               <span>
                                 Checkout{" "}
                                 <i class="fas fa-long-arrow-alt-right ms-2"></i>

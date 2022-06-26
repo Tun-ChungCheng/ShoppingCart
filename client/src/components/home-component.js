@@ -7,6 +7,7 @@ const HomeComponent = () => {
   useEffect(() => {
     ProductService.get()
       .then((products) => {
+        console.log(products.data.data);
         setProductData(products.data.data);
       })
       .catch((err) => {
@@ -14,8 +15,9 @@ const HomeComponent = () => {
       });
   }, []);
 
-  const addToCart = () => {
-    CartService.post();
+  const addToCartHandler = (e) => {
+    console.log(e.target.id);
+    CartService.post(e.target.id, 1);
   };
 
   return (
@@ -125,6 +127,7 @@ const HomeComponent = () => {
         >
           {productData.map((product) => (
             <div
+              key={product._id}
               className="card"
               style={{
                 boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
@@ -158,7 +161,8 @@ const HomeComponent = () => {
                 </p>
 
                 <button
-                  onClick={addToCart}
+                  id={product._id}
+                  onClick={addToCartHandler}
                   type="button"
                   className="btn btn-primary"
                 >

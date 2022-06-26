@@ -2,7 +2,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/cart";
 
 class CartService {
-  post(id, quantity) {
+  post(productId, quantity) {
     let token;
     if (localStorage.getItem("user")) {
       token = JSON.parse(localStorage.getItem("user")).token;
@@ -12,7 +12,7 @@ class CartService {
 
     return axios.post(
       API_URL,
-      { id, quantity },
+      { productId, quantity },
       {
         headers: {
           Authorization: token,
@@ -34,6 +34,25 @@ class CartService {
         Authorization: token,
       },
     });
+  }
+
+  delete(_id) {
+    let token;
+    if (localStorage.getItem("user")) {
+      token = JSON.parse(localStorage.getItem("user")).token;
+    } else {
+      token = "";
+    }
+
+    return axios.delete(
+      API_URL,
+      { _id },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
   }
 }
 

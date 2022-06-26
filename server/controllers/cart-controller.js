@@ -45,10 +45,13 @@ exports.addItemToCart = async (req, res) => {
 
         /***** Product doesn't exist but quantity > 0 *****/
       } else if (quantity > 0) {
+        console.log(productId, quantity, productDetails);
         cart.items.push({
           productId: productId,
           quantity: quantity,
+          name: productDetails.name,
           price: productDetails.price,
+          image: productDetails.image,
           total: parseInt(quantity * productDetails.price),
         });
         cart.subTotal = cart.items
@@ -74,7 +77,9 @@ exports.addItemToCart = async (req, res) => {
           {
             productId: productId,
             quantity: quantity,
+            name: productDetails.name,
             price: productDetails.price,
+            image: productDetails.image,
             total: parseInt(quantity * productDetails.price),
           },
         ],
