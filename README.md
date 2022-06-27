@@ -5,13 +5,13 @@
 ## Functions
 <ul>
   <li>Product Function: create/read/update/delete products.</li>
-  <li>Cart Function: add/delete products to cart.</li>  
-  <li>Account Function: register/login account.</li>
+  <li>Cart Function: add products to cart./delete products from cart.</li>  
+  <li>Account Function: register/login/update account.</li>
 </ul>
 
 ## Skill/Tools
 <ul>
-  <li>Frontend: HTML/CSS/JavaScript/jQuery/Ajax/React.js</li>
+  <li>Frontend: HTML/CSS/JavaScript/Ajax/React.js</li>
   <li>Backend: Node.js/Express.js/MongoDB</li>
   <li>IDE: Visual Studio Code</li>
 </ul>   
