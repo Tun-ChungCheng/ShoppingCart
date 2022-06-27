@@ -7,6 +7,7 @@ const PostCourseComponent = (props) => {
   let [name, setName] = useState("");
   let [image, setImage] = useState();
   let [price, setPrice] = useState(0);
+  let [description, setDescription] = useState("");
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
@@ -27,12 +28,17 @@ const PostCourseComponent = (props) => {
     setImage(e.target.files[0]);
   };
 
+  const handleChangeDescription = (e) => {
+    setDescription(e.target.value);
+  };
+
   const postProduct = (e) => {
     e.preventDefault();
     const payload = new FormData();
     payload.append("name", name);
     payload.append("image", image);
     payload.append("price", price);
+    payload.append("description", description);
     ProductService.post(payload)
       .then(() => {
         navigate("/");
@@ -63,15 +69,14 @@ const PostCourseComponent = (props) => {
 
             <label>Image</label>
             <br />
-
             <input
               type="file"
               name="image"
               className="form-control"
               onChange={handleChangeImage}
             />
-
             <br />
+
             <label>Price</label>
             <input
               type="number"
@@ -81,7 +86,18 @@ const PostCourseComponent = (props) => {
             />
             <br />
 
+            <label>Description</label>
+            <textArea
+              rows="8"
+              cols="50"
+              name="description"
+              className="form-control"
+              onChange={handleChangeDescription}
+            />
+            <br />
+
             <button className="btn btn-primary">Submit</button>
+            <br />
             <br />
           </form>
           {message && (

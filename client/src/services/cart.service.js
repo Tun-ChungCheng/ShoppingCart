@@ -36,23 +36,19 @@ class CartService {
     });
   }
 
-  delete(_id) {
+  delete(id) {
     let token;
     if (localStorage.getItem("user")) {
       token = JSON.parse(localStorage.getItem("user")).token;
     } else {
       token = "";
     }
-
-    return axios.delete(
-      API_URL,
-      { _id },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+    console.log(id, ":))");
+    return axios.delete(API_URL + "/" + id, {
+      headers: {
+        Authorization: token,
+      },
+    });
   }
 }
 

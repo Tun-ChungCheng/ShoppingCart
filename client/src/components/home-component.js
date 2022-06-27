@@ -3,7 +3,8 @@ import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
 
 const HomeComponent = () => {
-  let [productData, setProductData] = useState();
+  let [productData, setProductData] = useState([]);
+
   useEffect(() => {
     ProductService.get()
       .then((products) => {
@@ -16,8 +17,13 @@ const HomeComponent = () => {
   }, []);
 
   const addToCartHandler = (e) => {
-    console.log(e.target.id);
-    CartService.post(e.target.id, 1);
+    CartService.post(e.target.id, 1)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -159,6 +165,19 @@ const HomeComponent = () => {
                 >
                   ${product.price}
                 </p>
+
+                <h6
+                  className="card-text"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    webkitLineClamp: "2",
+                    webkitBoxOrient: "vertical",
+                  }}
+                >
+                  {product.description}
+                </h6>
 
                 <button
                   id={product._id}

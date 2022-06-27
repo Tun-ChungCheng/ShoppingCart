@@ -45,13 +45,15 @@ app.use(
 app.use("/api/cart", cartRoutes);
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Arise MERN Developers",
-  });
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "text/plain");
+  res.end("Hello, World!\n");
 });
 
 /***** Connect To port 8080 *****/
 const port = process.env.PORT || 8080; // Whatever is in the environment variable PORT, or 8080 if there's nothing there.
+const hostname = "localhost";
+
 app.listen(port, () => {
-  console.log(`Application is Running on ${port}`);
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

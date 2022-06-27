@@ -10,6 +10,9 @@ class ProductService {
       token = "";
     }
     console.log("service");
+    for (let item of payload) {
+      console.log(item[0], item[1]);
+    }
     return axios.post(API_URL, payload, {
       headers: {
         "Content-Type": "multipart/form-data",

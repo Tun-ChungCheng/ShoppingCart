@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
+import NavComponent from "./nav-component";
 
 const CartComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let [items, setItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
-  let [itemQuantity, setItemQuantity] = useState([]);
+  let [itemQuantity, setItemQuantity] = useState(0);
+  let [id, setId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,54 +29,17 @@ const CartComponent = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
 
   const deleteItemHandler = (e) => {
-    console.log(e.target.id);
     CartService.delete(e.target.id)
       .then((data) => {
-        console.log(data);
+        setId(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  // let [courseData, setCourseData] = useState(null);
-  // useEffect(() => {
-  //   console.log("Using effect.");
-  //   let _id;
-  //   if (currentUser) {
-  //     _id = currentUser.user._id;
-  //   } else {
-  //     _id = "";
-  //   }
-
-  //   if (currentUser.user.role == "instructor") {
-  //     CourseService.get(_id)
-  //       .then((data) => {
-  //         console.log(data);
-  //         setCourseData(data.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   } else if (currentUser.user.role == "student") {
-  //     CourseService.getEnrolledCourses(_id)
-  //       .then((data) => {
-  //         console.log(data);
-  //         setCourseData(data.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, []);
-  /* {currentUser && currentUser.user.role == "customer" && (
-        <div>
-          <h1>Welcome to customer's Course page.</h1>
-        </div>
-      )} */
 
   return (
     <div>
@@ -88,16 +53,25 @@ const CartComponent = (props) => {
                     <div class="col-lg-7">
                       <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                          <p class="mb-1">Shopping cart</p>
-                          <p class="mb-0">
-                            {/* You have {itemQuantity} items in your cart */}
-                          </p>
+                          {itemQuantity > 1 && (
+                            <p class="mb-0">
+                              You have {itemQuantity} items in your cart
+                            </p>
+                          )}
+                          {itemQuantity === 1 && (
+                            <p class="mb-0">
+                              You have {itemQuantity} item in your cart
+                            </p>
+                          )}
+                          {itemQuantity === 0 && (
+                            <p class="mb-0">Your shopping cart is empty</p>
+                          )}
                         </div>
                       </div>
 
                       {itemQuantity !== 0 &&
                         items.map((item) => (
-                          <div class="card mb-3">
+                          <div key={item._id} class="card mb-3">
                             <div class="card-body">
                               <div class="d-flex justify-content-between">
                                 <div class="d-flex flex-row align-items-center">
@@ -108,7 +82,11 @@ const CartComponent = (props) => {
                                       }
                                       class="img-fluid rounded-3"
                                       alt="Shopping item"
-                                      style={{ width: "65px" }}
+                                      style={{
+                                        width: "65px",
+                                        height: "65px",
+                                        objectFit: "cover",
+                                      }}
                                     />
                                   </div>
                                   <div class="ms-3">
@@ -127,12 +105,12 @@ const CartComponent = (props) => {
                                       ${item.price * item.quantity}
                                     </h5>
                                   </div>
-                                  <div
-                                    id={item._id}
-                                    onClick={deleteItemHandler}
-                                    style={{ color: "#cecece" }}
-                                  >
-                                    <i class="fas fa-trash-alt"></i>
+                                  <div style={{ color: "#cecece" }}>
+                                    <i
+                                      id={item._id}
+                                      onClick={deleteItemHandler}
+                                      class="fas fa-trash-alt"
+                                    ></i>
                                   </div>
                                 </div>
                               </div>

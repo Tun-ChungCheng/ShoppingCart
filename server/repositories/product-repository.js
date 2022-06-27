@@ -21,7 +21,7 @@ exports.productById = async (id) => {
   return product;
 };
 
-exports.renewProduct = async (id, payload) => {
+exports.updateProduct = async (id, payload) => {
   const product = await Product.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,

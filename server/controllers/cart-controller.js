@@ -123,14 +123,14 @@ exports.getCart = async (req, res) => {
   }
 };
 
-exports.deleteItemToCart = async (req, res) => {
+exports.deleteItemFromCart = async (req, res) => {
   let productId = req.params._id;
+  console.log(productId, "controller");
   let cart = await cartRepository.cart();
 
   try {
-    const indexFound = cart.items.findIndex(
-      (item) => item.productId._id == productId
-    );
+    const indexFound = cart.items.findIndex((item) => item._id == productId);
+    console.log(cart);
     cart.items.splice(indexFound, 1);
     /***** Product exist *****/
     if (indexFound != -1) {

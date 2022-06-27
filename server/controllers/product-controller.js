@@ -5,8 +5,7 @@ const Product = require("../models").productModel;
 exports.createProduct = async (req, res) => {
   const { error } = productValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  if (req.user.isCustomer())
-    return res.status(400).send("Only Seller can post new product.");
+
   try {
     console.log(req);
     console.log("lol");
@@ -14,7 +13,8 @@ exports.createProduct = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       image: req.file.path,
-      //seller: req.user._id,
+      description: req.body.description,
+      seller: req.user._id,
     };
     let product = await productRepository.createProduct({
       ...payload,
@@ -72,10 +72,10 @@ exports.updateProduct = async (req, res) => {
     let { id } = req.params;
     let product = await productRepository.productById(id);
     if (product.seller.equals(req.user._id) || req.user.isAdmin()) {
-      let renewProduct = await productRepository.renewProduct(id, req.body);
+      let updatedProduct = await productRepository.updateProduct(id, req.body);
       res.status(200).json({
         status: true,
-        data: renewProduct,
+        data: updatedProduct,
       });
     }
   } catch (err) {

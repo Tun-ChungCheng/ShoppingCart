@@ -1,15 +1,28 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
+import CartService from "../services/cart.service";
 
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
+  let [itemQuantity, setItemQuantity] = useState(0);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
     navigate("/");
   };
+
+  useEffect(() => {
+    CartService.get()
+      .then((cart) => {
+        setItemQuantity(cart.data.data.items.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [itemQuantity]);
 
   return (
     <div>
@@ -73,6 +86,9 @@ const NavComponent = (props) => {
             {currentUser && (
               <Link class="text-reset me-3" to="/cart">
                 <i class="fas fa-shopping-cart"></i>
+                <span class="badge rounded-pill badge-notification bg-danger">
+                  {itemQuantity}
+                </span>
               </Link>
             )}
             {/* <!-- Notifications --> */}
@@ -118,7 +134,6 @@ const NavComponent = (props) => {
               <div class="dropdown">
                 <a
                   class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                  href="#"
                   id="navbarDropdownMenuAvatar"
                   role="button"
                   data-mdb-toggle="dropdown"
@@ -160,63 +175,6 @@ const NavComponent = (props) => {
         {/* <!-- Container wrapper --> */}
       </nav>
       {/* <!-- Navbar --> */}
-      {/* <nav>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container-fluid">
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link className="nav-link active" to="/">
-                    Home
-                  </Link>
-                </li>
-                {!currentUser && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/register">
-                      Register
-                    </Link>
-                  </li>
-                )}
-                {!currentUser && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/login">
-                      Login
-                    </Link>
-                  </li>
-                )}
-                {currentUser && (
-                  <li className="nav-item">
-                    <Link onClick={handleLogout} className="nav-link" to="/">
-                      Logout
-                    </Link>
-                  </li>
-                )}
-                {currentUser && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                )}
-                {currentUser && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/cart">
-                      Cart
-                    </Link>
-                  </li>
-                )}
-                {currentUser && (
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/postProduct">
-                      Post Product
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </nav> */}
     </div>
   );
 };
