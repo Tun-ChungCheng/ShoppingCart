@@ -10,6 +10,7 @@ const PostCourseComponent = (props) => {
   let [description, setDescription] = useState("");
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!currentUser) {
       navigate("/login");
@@ -34,11 +35,13 @@ const PostCourseComponent = (props) => {
 
   const postProduct = (e) => {
     e.preventDefault();
+
     const payload = new FormData();
     payload.append("name", name);
     payload.append("image", image);
     payload.append("price", price);
     payload.append("description", description);
+
     ProductService.post(payload)
       .then(() => {
         navigate("/");

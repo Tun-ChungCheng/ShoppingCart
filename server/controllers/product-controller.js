@@ -7,8 +7,6 @@ exports.createProduct = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    console.log(req);
-    console.log("lol");
     let payload = {
       name: req.body.name,
       price: req.body.price,

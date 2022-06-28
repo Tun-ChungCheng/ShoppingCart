@@ -2,10 +2,9 @@ const cartRepository = require("../repositories").cartRepository;
 const productRepository = require("../repositories").productRepository;
 
 exports.addItemToCart = async (req, res) => {
-  const { productId } = req.body;
-  const quantity = Number.parseInt(req.body.quantity, 10);
-
   try {
+    const { productId } = req.body;
+    const quantity = Number.parseInt(req.body.quantity, 10);
     let productDetails = await productRepository.productById(productId);
     let cart = await cartRepository.cart();
 
@@ -45,7 +44,6 @@ exports.addItemToCart = async (req, res) => {
 
         /***** Product doesn't exist but quantity > 0 *****/
       } else if (quantity > 0) {
-        console.log(productId, quantity, productDetails);
         cart.items.push({
           productId: productId,
           quantity: quantity,
@@ -124,13 +122,10 @@ exports.getCart = async (req, res) => {
 };
 
 exports.deleteItemFromCart = async (req, res) => {
-  let productId = req.params._id;
-  console.log(productId, "controller");
-  let cart = await cartRepository.cart();
-
   try {
+    let productId = req.params._id;
+    let cart = await cartRepository.cart();
     const indexFound = cart.items.findIndex((item) => item._id == productId);
-    console.log(cart);
     cart.items.splice(indexFound, 1);
     /***** Product exist *****/
     if (indexFound != -1) {

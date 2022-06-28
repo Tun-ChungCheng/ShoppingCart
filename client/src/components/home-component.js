@@ -150,8 +150,8 @@ const HomeComponent = () => {
                   src={"http://localhost:8080/" + product.image}
                   alt="product"
                   style={{
-                    width: "10rem",
-                    height: "10rem",
+                    //width: "15rem",
+                    height: "15rem",
                     objectFit: "cover",
                     borderRadius: "10px",
                   }}
@@ -172,8 +172,9 @@ const HomeComponent = () => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
-                    webkitLineClamp: "2",
+                    webkitLineClamp: "6",
                     webkitBoxOrient: "vertical",
+                    textAlign: "left",
                   }}
                 >
                   {product.description}

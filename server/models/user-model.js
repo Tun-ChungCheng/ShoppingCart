@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please Include the role."],
     enum: ["customer", "seller"],
   },
+  avatar: {
+    type: String,
+    default: "as",
+  },
   date: {
     type: Date,
     default: Date.now,

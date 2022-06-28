@@ -6,6 +6,8 @@ import CartService from "../services/cart.service";
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let [itemQuantity, setItemQuantity] = useState(0);
+  // let [avatar, setAvatar] = useState("");
+  let { avatar, setAvatar } = props;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,6 +26,16 @@ const NavComponent = (props) => {
       });
   }, [itemQuantity]);
 
+  // useEffect(() => {
+  //   let id = currentUser.user._id;
+  //   AuthService.get(id)
+  //     .then((user) => {
+  //       setAvatar(user.data.data.avatar);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
   return (
     <div>
       {/* <!-- Navbar --> */}
@@ -140,10 +152,10 @@ const NavComponent = (props) => {
                   aria-expanded="false"
                 >
                   <img
-                    src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                    src={"http://localhost:8080/" + avatar}
                     class="rounded-circle"
                     height="30"
-                    alt="Black and White Portrait of a Man"
+                    alt="avatar"
                     loading="lazy"
                   />
                 </a>

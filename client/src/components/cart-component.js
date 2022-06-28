@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ProductService from "../services/product.service";
+// import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
-import NavComponent from "./nav-component";
+// import NavComponent from "./nav-component";
 
 const CartComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
+  let { avatar, setAvatar } = props;
+  let [id, setId] = useState("");
   let [items, setItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
   let [itemQuantity, setItemQuantity] = useState(0);
-  let [id, setId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,8 +32,9 @@ const CartComponent = (props) => {
       });
   }, [id]);
 
-  const deleteItemHandler = (e) => {
-    CartService.delete(e.target.id)
+  const deleteFromCartHandler = (e) => {
+    let id = e.target.id;
+    CartService.delete(id)
       .then((data) => {
         setId(data);
       })
@@ -108,7 +110,7 @@ const CartComponent = (props) => {
                                   <div style={{ color: "#cecece" }}>
                                     <i
                                       id={item._id}
-                                      onClick={deleteItemHandler}
+                                      onClick={deleteFromCartHandler}
                                       class="fas fa-trash-alt"
                                     ></i>
                                   </div>
@@ -124,9 +126,9 @@ const CartComponent = (props) => {
                           <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="mb-0">Card details</h5>
                             <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                              src={"http://localhost:8080/" + avatar}
                               class="img-fluid rounded-3"
-                              style={{ width: "45px" }}
+                              style={{ width: "100px" }}
                               alt="Avatar"
                             />
                           </div>

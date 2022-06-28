@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import HomeComponent from "./components/home-component";
 import NavComponent from "./components/nav-component";
@@ -12,10 +12,27 @@ import FooterComponent from "./components/footer-component";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+  let [avatar, setAvatar] = useState("");
+
+  useEffect(() => {
+    let id = currentUser.user._id;
+    AuthService.get(id)
+      .then((user) => {
+        setAvatar(user.data.data.avatar);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div>
-      <NavComponent currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <NavComponent
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        avatar={avatar}
+        setAvatar={setAvatar}
+      />
       <Routes>
         <Route path="/" element={<HomeComponent />} />
       </Routes>
@@ -40,6 +57,8 @@ function App() {
             <ProfileComponent
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              avatar={avatar}
+              setAvatar={setAvatar}
             />
           }
         />
@@ -51,6 +70,8 @@ function App() {
             <CartComponent
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              avatar={avatar}
+              setAvatar={setAvatar}
             />
           }
         />

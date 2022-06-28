@@ -1,19 +1,18 @@
 const registerValidation = require("../config/validation").registerValidation;
 const loginValidation = require("../config/validation").loginValidation;
 const authRepository = require("../repositories").authRepository;
-const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.register = async (req, res) => {
-  // Check the validation of data.
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  // Check if the user exists.
+
   let email = req.body.email;
   const emailExist = await authRepository.findUser(email);
+
   if (emailExist)
     return res.status(400).send("Email has already been registered.");
 
-  // Register the user
   try {
     let payload = {
       username: req.body.username,
@@ -36,13 +35,13 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  // Check the validation of data
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
     let email = req.body.email;
     const user = await authRepository.findUser(email);
+
     if (!user) return res.status(400).send("Email doesn't exist.");
     else
       user.comparePassword(req.body.password, function (err, isMatch) {
@@ -55,6 +54,49 @@ exports.login = async (req, res) => {
           res.status(401).send("Wrong password.");
         }
       });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: false,
+      error: err,
+    });
+  }
+};
+
+exports.updatePofile = async (req, res) => {
+  try {
+    let password = req.body.password;
+    const hash = await bcrypt.hash(password, 10);
+
+    let payload = {
+      username: req.body.username,
+      email: req.body.email,
+      password: hash,
+      avatar: req.file.path,
+    };
+
+    const user = await authRepository.updateUser(payload);
+    res.status(200).send({
+      status: true,
+      data: user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: false,
+      error: err,
+    });
+  }
+};
+
+exports.getPofile = async (req, res) => {
+  try {
+    let id = req.params.id;
+    let profile = await authRepository.getUser(id);
+    res.status(200).json({
+      status: true,
+      data: profile,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({
