@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
 
-const HomeComponent = () => {
+const HomeComponent = (props) => {
   let [productData, setProductData] = useState([]);
+  let { cartItemQuantity, setCartItemQuantity } = props;
 
   useEffect(() => {
     ProductService.get()
       .then((products) => {
-        console.log(products.data.data);
-        setProductData(products.data.data);
+        let productData = products.data.data;
+        setProductData(productData);
       })
       .catch((err) => {
         console.log(err);
@@ -18,8 +19,10 @@ const HomeComponent = () => {
 
   const addToCartHandler = (e) => {
     CartService.post(e.target.id, 1)
-      .then((data) => {
-        console.log(data);
+      .then((cart) => {
+        let cartItemQuantity = cart.data.data.items.length;
+        setCartItemQuantity(cartItemQuantity);
+        console.log(cart);
       })
       .catch((err) => {
         console.log(err);
@@ -66,6 +69,7 @@ const HomeComponent = () => {
               src="https://source.unsplash.com/random/1200x300/?coupon"
               class="d-block w-100"
               alt="coupon"
+              style={{ objectFit: "cover" }}
             />
             <div class="carousel-caption d-none d-md-block">
               <h5>1</h5>
@@ -79,6 +83,7 @@ const HomeComponent = () => {
               src="https://source.unsplash.com/random/1200x300/?money"
               class="d-block w-100"
               alt="money"
+              style={{ objectFit: "cover" }}
             />
             <div class="carousel-caption d-none d-md-block">
               <h5>2</h5>
@@ -92,6 +97,7 @@ const HomeComponent = () => {
               src="https://source.unsplash.com/random/1200x300/?products"
               class="d-block w-100"
               alt="products"
+              style={{ objectFit: "cover" }}
             />
             <div class="carousel-caption d-none d-md-block">
               <h5>3</h5>
@@ -172,7 +178,7 @@ const HomeComponent = () => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     display: "-webkit-box",
-                    webkitLineClamp: "6",
+                    webkitLineClamp: "10",
                     webkitBoxOrient: "vertical",
                     textAlign: "left",
                   }}

@@ -16,6 +16,20 @@ const ProfileComponent = (props) => {
     }
   });
 
+  useEffect(() => {
+    let id = currentUser.user._id;
+    AuthService.get(id)
+      .then((user) => {
+        let { username, avatar } = user.data.data;
+        setUsername(username);
+        setAvatar(avatar);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessage(error.response.data);
+      });
+  }, []);
+
   const handleChangeUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -32,11 +46,12 @@ const ProfileComponent = (props) => {
     e.preventDefault();
 
     const payload = new FormData();
+    payload.append("email", currentUser.user.email);
     payload.append("username", username);
     payload.append("avatar", avatar);
     payload.append("password", password);
 
-    AuthService.post(payload)
+    AuthService.patch(payload)
       .then(() => {
         navigate("/");
       })
@@ -54,11 +69,12 @@ const ProfileComponent = (props) => {
             <img
               src={"http://localhost:8080/" + avatar}
               class="rounded-circle mb-3"
-              style={{ width: "150px" }}
-              alt="Avatar"
+              style={{ width: "150px", height: "150px", objectFit: "cover" }}
+              alt="Loading..."
             />
             <h5 class="mb-2">
-              <strong>{currentUser.user.username}</strong>
+              {username && <strong>{username}</strong>}
+              {!username && <strong>{currentUser.user.username}</strong>}
             </h5>
             <p class="text-muted">{currentUser.user.email}</p>
           </div>
@@ -73,6 +89,7 @@ const ProfileComponent = (props) => {
               type="text"
               name="username"
               className="form-control"
+              placeholder={username}
               onChange={handleChangeUsername}
             />
             <br />
@@ -87,7 +104,7 @@ const ProfileComponent = (props) => {
             />
             <br />
 
-            <label>Password</label>
+            <label>New Password</label>
             <input
               type="text"
               name="password"
@@ -96,8 +113,9 @@ const ProfileComponent = (props) => {
             />
             <br />
 
-            <button className="btn btn-primary">Submit</button>
+            <button className="btn btn-primary">Save</button>
           </form>
+          <br />
 
           {message && (
             <div className="alert alert-warning" role="alert">

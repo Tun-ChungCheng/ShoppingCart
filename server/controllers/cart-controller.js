@@ -4,7 +4,7 @@ const productRepository = require("../repositories").productRepository;
 exports.addItemToCart = async (req, res) => {
   try {
     const { productId } = req.body;
-    const quantity = Number.parseInt(req.body.quantity, 10);
+    let quantity = Number.parseInt(req.body.quantity, 10);
     let productDetails = await productRepository.productById(productId);
     let cart = await cartRepository.cart();
 
@@ -21,9 +21,10 @@ exports.addItemToCart = async (req, res) => {
         (item) => item.productId._id == productId
       );
 
-      /***** Product exists but quantity <= 0 *****/
-      if (indexFound != -1 && quantity <= 0) {
-        cart.items.splice(index, 1);
+      console.log(productId, indexFound, quantity, productDetails);
+      /***** Product exists but item's quantity <= 0 *****/
+      if (indexFound != -1 && cart.items[indexFound].quantity <= 0) {
+        cart.items.splice(indexFound, 1);
         if (cart.items.length == 0) {
           cart.subTotal = 0;
         } else {
@@ -86,12 +87,12 @@ exports.addItemToCart = async (req, res) => {
       let cart = await cartRepository.addItem(cartData);
       res.json(cart);
     }
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.status(400).json({
       type: "Invalid",
       msg: "Something Went Wrong",
-      err: err,
+      error: error,
     });
   }
 };
@@ -111,12 +112,12 @@ exports.getCart = async (req, res) => {
       status: true,
       data: cart,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.status(400).json({
       type: "Invalid",
       msg: "Something Went Wrong",
-      error: err,
+      error: error,
     });
   }
 };
@@ -143,12 +144,12 @@ exports.deleteItemFromCart = async (req, res) => {
         msg: "Cart Not Found.",
       });
     }
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.status(400).json({
       type: "Invalid",
       msg: "Something Went Wrong",
-      error: err,
+      error: error,
     });
   }
 };

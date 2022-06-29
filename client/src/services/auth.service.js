@@ -2,12 +2,18 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/user";
 
 class AuthService {
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
   login(email, password) {
     return axios.post(API_URL + "/login", { email, password });
   }
+
   logout() {
     localStorage.removeItem("user");
   }
+
   register(username, email, password, role) {
     return axios.post(API_URL + "/register", {
       username,
@@ -15,9 +21,6 @@ class AuthService {
       password,
       role,
     });
-  }
-  getCurrentUser() {
-    return JSON.parse(localStorage.getItem("user"));
   }
 
   patch(payload) {
@@ -28,9 +31,7 @@ class AuthService {
       token = "";
     }
     console.log("service");
-    for (let item of payload) {
-      console.log(item[0], item[1]);
-    }
+
     return axios.patch(API_URL, payload, {
       headers: {
         "Content-Type": "multipart/form-data",

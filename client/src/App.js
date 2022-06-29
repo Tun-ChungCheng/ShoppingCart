@@ -5,25 +5,40 @@ import NavComponent from "./components/nav-component";
 import RegisterComponent from "./components/register-component";
 import LoginComponent from "./components/login-component";
 import ProfileComponent from "./components/profile-component";
-import AuthService from "./services/auth.service";
 import CartComponent from "./components/cart-component";
 import PostProductComponent from "./components/postProduct-component";
 import FooterComponent from "./components/footer-component";
+import AuthService from "./services/auth.service";
+import CartService from "./services/cart.service";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   let [avatar, setAvatar] = useState("");
+  let [cartItemQuantity, setCartItemQuantity] = useState(0);
 
   useEffect(() => {
+    console.log(currentUser);
     let id = currentUser.user._id;
     AuthService.get(id)
       .then((user) => {
-        setAvatar(user.data.data.avatar);
+        let avatar = user.data.data.avatar;
+        setAvatar(avatar);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+    CartService.get()
+      .then((cart) => {
+        let cartItemQuantity = cart.data.data.items.length;
+        setCartItemQuantity(cartItemQuantity);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [cartItemQuantity]);
 
   return (
     <div>
@@ -32,9 +47,19 @@ function App() {
         setCurrentUser={setCurrentUser}
         avatar={avatar}
         setAvatar={setAvatar}
+        cartItemQuantity={cartItemQuantity}
+        setCartItemQuantity={setCartItemQuantity}
       />
       <Routes>
-        <Route path="/" element={<HomeComponent />} />
+        <Route
+          path="/"
+          element={
+            <HomeComponent
+              cartItemQuantity={cartItemQuantity}
+              setCartItemQuantity={setCartItemQuantity}
+            />
+          }
+        />
       </Routes>
       <Routes>
         <Route path="/register" element={<RegisterComponent />} />
@@ -72,6 +97,8 @@ function App() {
               setCurrentUser={setCurrentUser}
               avatar={avatar}
               setAvatar={setAvatar}
+              cartItemQuantity={cartItemQuantity}
+              setCartItemQuantity={setCartItemQuantity}
             />
           }
         />

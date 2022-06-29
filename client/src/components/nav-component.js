@@ -4,10 +4,9 @@ import AuthService from "../services/auth.service";
 import CartService from "../services/cart.service";
 
 const NavComponent = (props) => {
-  let { currentUser, setCurrentUser } = props;
-  let [itemQuantity, setItemQuantity] = useState(0);
-  // let [avatar, setAvatar] = useState("");
   let { avatar, setAvatar } = props;
+  let { currentUser, setCurrentUser } = props;
+  let { cartItemQuantity, setCartItemQuantity } = props;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,23 +18,14 @@ const NavComponent = (props) => {
   useEffect(() => {
     CartService.get()
       .then((cart) => {
-        setItemQuantity(cart.data.data.items.length);
+        let cartItemQuantity = cart.data.data.items.length;
+        setCartItemQuantity(cartItemQuantity);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [itemQuantity]);
+  }, []);
 
-  // useEffect(() => {
-  //   let id = currentUser.user._id;
-  //   AuthService.get(id)
-  //     .then((user) => {
-  //       setAvatar(user.data.data.avatar);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
   return (
     <div>
       {/* <!-- Navbar --> */}
@@ -99,7 +89,7 @@ const NavComponent = (props) => {
               <Link class="text-reset me-3" to="/cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="badge rounded-pill badge-notification bg-danger">
-                  {itemQuantity}
+                  {cartItemQuantity}
                 </span>
               </Link>
             )}
@@ -116,7 +106,7 @@ const NavComponent = (props) => {
                 >
                   <i class="fas fa-bell"></i>
                   <span class="badge rounded-pill badge-notification bg-danger">
-                    1
+                    3
                   </span>
                 </a>
                 <ul
@@ -154,8 +144,10 @@ const NavComponent = (props) => {
                   <img
                     src={"http://localhost:8080/" + avatar}
                     class="rounded-circle"
+                    width="30"
                     height="30"
-                    alt="avatar"
+                    style={{ objectFit: "cover" }}
+                    alt="Loading..."
                     loading="lazy"
                   />
                 </a>

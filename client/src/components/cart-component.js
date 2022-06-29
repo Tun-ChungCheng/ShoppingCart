@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
-// import NavComponent from "./nav-component";
 
 const CartComponent = (props) => {
-  let { currentUser, setCurrentUser } = props;
   let { avatar, setAvatar } = props;
+  let { currentUser, setCurrentUser } = props;
+  let { cartItemQuantity, setCartItemQuantity } = props;
   let [id, setId] = useState("");
   let [items, setItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
-  let [itemQuantity, setItemQuantity] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,21 +20,49 @@ const CartComponent = (props) => {
   useEffect(() => {
     CartService.get()
       .then((cart) => {
-        console.log(cart.data.data);
-        setItemQuantity(cart.data.data.items.length);
-        setItems(cart.data.data.items);
-        setSubTotal(cart.data.data.subTotal);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+        const cartItemQuantity = cart.data.data.items.length;
+        const items = cart.data.data.items;
+        const subTotal = cart.data.data.subTotal;
 
-  const deleteFromCartHandler = (e) => {
-    let id = e.target.id;
+        setCartItemQuantity(cartItemQuantity);
+        setItems(items);
+        setSubTotal(subTotal);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [items]);
+
+  const deleteFromCart = (e) => {
+    const id = e.target.id;
+
     CartService.delete(id)
       .then((data) => {
         setId(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const addItemQuantity = (e) => {
+    const id = e.target.id;
+
+    CartService.post(id, 1)
+      .then((cart) => {
+        console.log(cart);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const substractItemQuantity = (e) => {
+    let id = e.target.id;
+
+    CartService.post(id, -1)
+      .then((cart) => {
+        console.log(cart);
       })
       .catch((err) => {
         console.log(err);
@@ -55,23 +81,23 @@ const CartComponent = (props) => {
                     <div class="col-lg-7">
                       <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                          {itemQuantity > 1 && (
+                          {cartItemQuantity > 1 && (
                             <p class="mb-0">
-                              You have {itemQuantity} items in your cart
+                              You have {cartItemQuantity} items in your cart
                             </p>
                           )}
-                          {itemQuantity === 1 && (
+                          {cartItemQuantity === 1 && (
                             <p class="mb-0">
-                              You have {itemQuantity} item in your cart
+                              You have {cartItemQuantity} item in your cart
                             </p>
                           )}
-                          {itemQuantity === 0 && (
+                          {cartItemQuantity === 0 && (
                             <p class="mb-0">Your shopping cart is empty</p>
                           )}
                         </div>
                       </div>
 
-                      {itemQuantity !== 0 &&
+                      {cartItemQuantity > 0 &&
                         items.map((item) => (
                           <div key={item._id} class="card mb-3">
                             <div class="card-body">
@@ -97,11 +123,32 @@ const CartComponent = (props) => {
                                   </div>
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
-                                  <div style={{ width: "50px" }}>
+                                  {item.quantity > 1 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      id={item.productId._id}
+                                      onClick={substractItemQuantity}
+                                    >
+                                      -
+                                    </button>
+                                  )}
+
+                                  <div style={{ padding: "15px" }}>
                                     <h5 class="fw-normal mb-0">
                                       {item.quantity}
                                     </h5>
                                   </div>
+
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    id={item.productId._id}
+                                    onClick={addItemQuantity}
+                                  >
+                                    +
+                                  </button>
+
                                   <div style={{ width: "80px" }}>
                                     <h5 class="mb-0">
                                       ${item.price * item.quantity}
@@ -110,7 +157,7 @@ const CartComponent = (props) => {
                                   <div style={{ color: "#cecece" }}>
                                     <i
                                       id={item._id}
-                                      onClick={deleteFromCartHandler}
+                                      onClick={deleteFromCart}
                                       class="fas fa-trash-alt"
                                     ></i>
                                   </div>

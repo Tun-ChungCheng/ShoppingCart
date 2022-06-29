@@ -1,7 +1,10 @@
 const registerValidation = require("../config/validation").registerValidation;
 const loginValidation = require("../config/validation").loginValidation;
+const profileUpdateValidation =
+  require("../config/validation").profileUpdateValidation;
 const authRepository = require("../repositories").authRepository;
 const bcrypt = require("bcrypt");
+const jwt = require("jsonWebToken");
 
 exports.register = async (req, res) => {
   const { error } = registerValidation(req.body);
@@ -64,6 +67,9 @@ exports.login = async (req, res) => {
 };
 
 exports.updatePofile = async (req, res) => {
+  const { error } = profileUpdateValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   try {
     let password = req.body.password;
     const hash = await bcrypt.hash(password, 10);
@@ -74,12 +80,13 @@ exports.updatePofile = async (req, res) => {
       password: hash,
       avatar: req.file.path,
     };
-
+    //console.log(payload);
     const user = await authRepository.updateUser(payload);
     res.status(200).send({
       status: true,
       data: user,
     });
+    console.log(user);
   } catch (err) {
     console.log(err);
     res.status(500).json({
