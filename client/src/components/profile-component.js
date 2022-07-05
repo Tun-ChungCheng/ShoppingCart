@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ProfileComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let { avatar, setAvatar } = props;
+  let { productData, setProductData } = props;
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
@@ -12,22 +13,20 @@ const ProfileComponent = (props) => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate("/");
+    } else {
+      let id = currentUser.user._id;
+      AuthService.get(id)
+        .then((user) => {
+          let { username, avatar } = user.data.data;
+          setUsername(username);
+          setAvatar(avatar);
+        })
+        .catch((error) => {
+          console.log(error.response);
+          setMessage(error.response.data);
+        });
     }
-  });
-
-  useEffect(() => {
-    let id = currentUser.user._id;
-    AuthService.get(id)
-      .then((user) => {
-        let { username, avatar } = user.data.data;
-        setUsername(username);
-        setAvatar(avatar);
-      })
-      .catch((error) => {
-        console.log(error.response);
-        setMessage(error.response.data);
-      });
   }, []);
 
   const handleChangeUsername = (e) => {
@@ -42,7 +41,7 @@ const ProfileComponent = (props) => {
     setAvatar(e.target.files[0]);
   };
 
-  const updatePofile = (e) => {
+  const updatePofileHandler = (e) => {
     e.preventDefault();
 
     const payload = new FormData();
@@ -62,86 +61,67 @@ const ProfileComponent = (props) => {
   };
 
   return (
-    <div style={{ padding: "3rem" }}>
-      {currentUser && (
-        <div className="form-group">
-          <div style={{ textAlign: "center" }}>
+    <div className="Auth-form-container">
+      <div className="Auth-form">
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Profile</h3>
+          <div className="text-center">
             <img
-              src={"http://localhost:8080/" + avatar}
+              src={"http://localhost:8080/" + currentUser.user.avatar}
               class="rounded-circle mb-3"
               style={{ width: "150px", height: "150px", objectFit: "cover" }}
-              alt="Loading..."
+              alt="User"
             />
-            <h5 class="mb-2">
-              {username && <strong>{username}</strong>}
-              {!username && <strong>{currentUser.user.username}</strong>}
-            </h5>
-            <p class="text-muted">{currentUser.user.email}</p>
           </div>
-
+          <h3 className="Auth-form-title">{currentUser.user.username}</h3>
           <form
-            onSubmit={updatePofile}
+            onSubmit={updatePofileHandler}
             method="patch"
-            enctype="multipart/form-data"
+            encType="multipart/form-data"
           >
-            <label>Username</label>
-            <input
-              type="text"
-              name="username"
-              className="form-control"
-              placeholder={username}
-              onChange={handleChangeUsername}
-            />
-            <br />
+            <div className="form-group mt-3">
+              <label>New Full Name</label>
 
-            <label>Avatar</label>
-            <br />
-            <input
-              type="file"
-              name="avatar"
-              className="form-control"
-              onChange={handleChangeAvatar}
-            />
-            <br />
-
-            <label>New Password</label>
-            <input
-              type="text"
-              name="password"
-              className="form-control"
-              onChange={handleChangePassword}
-            />
-            <br />
-
-            <button className="btn btn-primary">Save</button>
+              <input
+                type="text"
+                name="username"
+                className="form-control mt-1"
+                placeholder={username}
+                onChange={handleChangeUsername}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>New Avatar</label>
+              <input
+                type="file"
+                name="avatar"
+                className="form-control mt-1"
+                onChange={handleChangeAvatar}
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>New Password</label>
+              <input
+                type="password"
+                name="password"
+                className="form-control mt-1"
+                placeholder="New Password"
+                onChange={handleChangePassword}
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button className="btn btn-primary">Save</button>
+            </div>
           </form>
-          <br />
 
+          <br />
           {message && (
-            <div className="alert alert-warning" role="alert">
+            <div className="alert alert-danger" role="alert">
               {message}
             </div>
           )}
         </div>
-
-        // <div>
-        //   <h1>In profile page.</h1>
-        //   <header className="jumbotron">
-        //     <h3>
-        //       <strong></strong>
-        //     </h3>
-        //   </header>
-        //   <p>
-        //     <strong>Token: {currentUser.token}</strong>
-        //   </p>
-        //   <p>
-        //     <strong>ID: {currentUser.user._id}</strong>
-        //   </p>
-        //   <p>
-        //     <strong>email: {currentUser.user.email}</strong>
-        //   </p>
-        // </div>
-      )}
+      </div>
     </div>
   );
 };

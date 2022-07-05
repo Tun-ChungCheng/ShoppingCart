@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const dovenv = require("dotenv");
 dovenv.config();
 const path = require("path");
+const session = require("express-session");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes").product;
 const cartRoutes = require("./routes").cart;
@@ -13,7 +14,7 @@ const authRoutes = require("./routes").auth;
 const passport = require("passport");
 require("./config/passport")(passport);
 
-/***** Connect To Mongo DB Altas *****/
+/* Connect To Mongo DB Altas */
 mongoose
   .connect(process.env.DB_CONNECT, {
     useNewUrlParser: true,
@@ -26,7 +27,7 @@ mongoose
     console.log(e);
   });
 
-/***** Middleware *****/
+/* Middleware */
 app.use(cors());
 app.use(morgan("dev")); // HTTP request logger middleware
 app.use(bodyParser.json());
@@ -35,8 +36,19 @@ app.use(
     extended: false, // true : any type || false : string or array
   })
 );
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/files", express.static(path.join(__dirname, "/files")));
-app.use("/api/user", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use(
   "/api/product",
   passport.authenticate("jwt", { session: false }),
@@ -50,8 +62,8 @@ app.get("/", (req, res) => {
   res.end("Hello, World!\n");
 });
 
-/***** Connect To port 8080 *****/
-const port = process.env.PORT || 8080; // Whatever is in the environment variable PORT, or 8080 if there's nothing there.
+/* Connect To port 8080 */
+const port = process.env.PORT || 8080;
 const hostname = "localhost";
 
 app.listen(port, () => {

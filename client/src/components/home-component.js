@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
-import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ProductService from "../services/product.service";
 
 const HomeComponent = (props) => {
-  let [productData, setProductData] = useState([]);
+  let { productData, setProductData } = props;
+  let { currentUser, setCurrentUser } = props;
   let { cartItemQuantity, setCartItemQuantity } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    ProductService.get()
-      .then((products) => {
-        let productData = products.data.data;
-        setProductData(productData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!currentUser) {
+      navigate("/");
+    }
   }, []);
 
   const addToCartHandler = (e) => {
@@ -22,11 +20,23 @@ const HomeComponent = (props) => {
       .then((cart) => {
         let cartItemQuantity = cart.data.data.items.length;
         setCartItemQuantity(cartItemQuantity);
-        console.log(cart);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
+  };
+
+  const deleteProductHandler = (e) => {
+    const isExecuted = window.confirm("Are you sure to delete this product?");
+    if (isExecuted) {
+      ProductService.delete(e.target.id)
+        .then((product) => {
+          console.log(product);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -34,16 +44,16 @@ const HomeComponent = (props) => {
       {/* <!-- Carousel wrapper --> */}
       <div
         id="carouselBasicExample"
-        class="carousel slide carousel-fade"
+        className="carousel slide carousel-fade"
         data-mdb-ride="carousel"
       >
         {/* <!-- Indicators --> */}
-        <div class="carousel-indicators">
+        <div className="carousel-indicators">
           <button
             type="button"
             data-mdb-target="#carouselBasicExample"
             data-mdb-slide-to="0"
-            class="active"
+            className="active"
             aria-current="true"
             aria-label="Slide 1"
           ></button>
@@ -62,44 +72,44 @@ const HomeComponent = (props) => {
         </div>
 
         {/* <!-- Inner --> */}
-        <div class="carousel-inner">
+        <div className="carousel-inner">
           {/* <!-- Single item --> */}
-          <div class="carousel-item active">
+          <div className="carousel-item active">
             <img
               src="https://source.unsplash.com/random/1200x300/?coupon"
-              class="d-block w-100"
+              className="d-block w-100"
               alt="coupon"
               style={{ objectFit: "cover" }}
             />
-            <div class="carousel-caption d-none d-md-block">
+            <div className="carousel-caption d-none d-md-block">
               <h5>1</h5>
               <p></p>
             </div>
           </div>
 
           {/* <!-- Single item --> */}
-          <div class="carousel-item">
+          <div className="carousel-item">
             <img
               src="https://source.unsplash.com/random/1200x300/?money"
-              class="d-block w-100"
+              className="d-block w-100"
               alt="money"
               style={{ objectFit: "cover" }}
             />
-            <div class="carousel-caption d-none d-md-block">
+            <div className="carousel-caption d-none d-md-block">
               <h5>2</h5>
               <p></p>
             </div>
           </div>
 
           {/* <!-- Single item --> */}
-          <div class="carousel-item">
+          <div className="carousel-item">
             <img
               src="https://source.unsplash.com/random/1200x300/?products"
-              class="d-block w-100"
+              className="d-block w-100"
               alt="products"
               style={{ objectFit: "cover" }}
             />
-            <div class="carousel-caption d-none d-md-block">
+            <div className="carousel-caption d-none d-md-block">
               <h5>3</h5>
               <p></p>
             </div>
@@ -109,22 +119,28 @@ const HomeComponent = (props) => {
 
         {/* <!-- Controls --> */}
         <button
-          class="carousel-control-prev"
+          className="carousel-control-prev"
           type="button"
           data-mdb-target="#carouselBasicExample"
           data-mdb-slide="prev"
         >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Previous</span>
         </button>
         <button
-          class="carousel-control-next"
+          className="carousel-control-next"
           type="button"
           data-mdb-target="#carouselBasicExample"
           data-mdb-slide="next"
         >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="visually-hidden">Next</span>
         </button>
       </div>
       {/* <!-- Carousel wrapper --> */}
@@ -139,61 +155,49 @@ const HomeComponent = (props) => {
         >
           {productData.map((product) => (
             <div
+              class="card text-center"
               key={product._id}
-              className="card"
               style={{
+                width: "25vh",
                 boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-                maxWidth: "300px",
                 margin: "1rem",
-                textAlign: "center",
               }}
             >
-              <div
-                className="card-body"
-                style={{ margin: "1rem", justifyItems: "center" }}
-              >
-                <img
-                  src={"http://localhost:8080/" + product.image}
-                  alt="product"
-                  style={{
-                    //width: "15rem",
-                    height: "15rem",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                />
-
-                <h5 className="card-title">{product.name}</h5>
-
-                <p
-                  className="card-text"
-                  style={{ color: "grey", fontSize: "18px" }}
-                >
+              <img
+                class="card-img-top "
+                src={"http://localhost:8080/" + product.image}
+                alt="Card image cap"
+                style={{ width: "25vh", height: "28vh", objectFit: "cover" }}
+              />
+              <div class="card-body">
+                <strong class="card-title" style={{ fontSize: "1vh" }}>
+                  {product.name}
+                </strong>
+                <strong class="card-title" style={{ fontSize: "1vh" }}>
                   ${product.price}
-                </p>
+                </strong>
 
-                <h6
-                  className="card-text"
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    webkitLineClamp: "10",
-                    webkitBoxOrient: "vertical",
-                    textAlign: "left",
-                  }}
-                >
-                  {product.description}
-                </h6>
-
-                <button
-                  id={product._id}
-                  onClick={addToCartHandler}
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  Add to cart
-                </button>
+                {/* <p class="card-text">{product.description}</p> */}
+                {currentUser && currentUser.user._id !== product.seller._id && (
+                  <button
+                    id={product._id}
+                    onClick={addToCartHandler}
+                    type="button"
+                    className="btn btn-primary"
+                  >
+                    Add to cart
+                  </button>
+                )}
+                {currentUser.user._id === product.seller._id && (
+                  <button
+                    id={product._id}
+                    onClick={deleteProductHandler}
+                    type="button"
+                    className="btn btn-danger"
+                  >
+                    Delete Product
+                  </button>
+                )}
               </div>
             </div>
           ))}

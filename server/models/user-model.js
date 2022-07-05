@@ -20,15 +20,18 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Password can't be less then 6."],
     maxlength: [1024, "Password can't be more then 1024."],
   },
-  role: {
-    type: String,
-    required: [true, "Please Include the role."],
-    enum: ["customer", "seller"],
-  },
   avatar: {
     type: String,
-    default: "as",
+    default: "files/user-solid.svg",
   },
+  /* For Google Authentication */
+  googleID: {
+    type: String,
+  },
+  thumbnail: {
+    type: String,
+  },
+  /* For Google Authentication */
   date: {
     type: Date,
     default: Date.now,

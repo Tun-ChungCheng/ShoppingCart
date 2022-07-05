@@ -13,9 +13,9 @@ const PostCourseComponent = (props) => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate("/");
     }
-  });
+  }, []);
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -33,18 +33,17 @@ const PostCourseComponent = (props) => {
     setDescription(e.target.value);
   };
 
-  const postProduct = (e) => {
+  const postProductHandler = (e) => {
     e.preventDefault();
-
+    console.log(name, price, image);
     const payload = new FormData();
     payload.append("name", name);
     payload.append("image", image);
     payload.append("price", price);
     payload.append("description", description);
-
     ProductService.post(payload)
       .then(() => {
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error.response);
@@ -54,14 +53,14 @@ const PostCourseComponent = (props) => {
 
   return (
     <div style={{ padding: "3rem" }}>
-      {currentUser && currentUser.user.role === "seller" && (
+      {currentUser && (
         <div className="form-group">
           <form
-            onSubmit={postProduct}
+            onSubmit={postProductHandler}
             method="post"
-            enctype="multipart/form-data"
+            encType="multipart/form-data"
           >
-            <label>Name</label>
+            <label>Product Name</label>
             <input
               type="text"
               name="name"
@@ -70,7 +69,7 @@ const PostCourseComponent = (props) => {
             />
             <br />
 
-            <label>Image</label>
+            <label>Product Image</label>
             <br />
             <input
               type="file"
@@ -80,7 +79,7 @@ const PostCourseComponent = (props) => {
             />
             <br />
 
-            <label>Price</label>
+            <label>Product Price</label>
             <input
               type="number"
               name="price"
@@ -89,8 +88,8 @@ const PostCourseComponent = (props) => {
             />
             <br />
 
-            <label>Description</label>
-            <textArea
+            <label>Product Description</label>
+            <textarea
               rows="8"
               cols="50"
               name="description"

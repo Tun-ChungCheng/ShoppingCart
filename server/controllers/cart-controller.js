@@ -21,7 +21,6 @@ exports.addItemToCart = async (req, res) => {
         (item) => item.productId._id == productId
       );
 
-      console.log(productId, indexFound, quantity, productDetails);
       /***** Product exists but item's quantity <= 0 *****/
       if (indexFound != -1 && cart.items[indexFound].quantity <= 0) {
         cart.items.splice(indexFound, 1);
@@ -45,6 +44,7 @@ exports.addItemToCart = async (req, res) => {
 
         /***** Product doesn't exist but quantity > 0 *****/
       } else if (quantity > 0) {
+        console.log(cart);
         cart.items.push({
           productId: productId,
           quantity: quantity,

@@ -4,87 +4,100 @@ import AuthService from "../services/auth.service";
 
 const LoginComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
-  const navigate = useNavigate();
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
+
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
   };
-  const handleLogin = () => {
+
+  const loginHandler = () => {
     AuthService.login(email, password)
       .then((response) => {
-        console.log(response.data);
         if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
         setCurrentUser(AuthService.getCurrentUser());
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error);
         setMessage(error.response.data);
       });
   };
 
+  const googleLoginHandler = () => {
+    AuthService.googleLogin()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <div style={{ padding: "3rem" }}>
-      {message && (
-        <div className="alert alert-danger" role="alert">
-          {message}
+    <div className="Auth-form-container">
+      <form className="Auth-form">
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Login</h3>
+
+          <div className="form-group mt-3">
+            <label>Email address</label>
+            <input
+              type="email"
+              onChange={handleChangeEmail}
+              className="form-control mt-1"
+              placeholder="Enter email"
+            />
+          </div>
+
+          <div className="form-group mt-3">
+            <label>Password</label>
+            <input
+              type="password"
+              onChange={handleChangePassword}
+              className="form-control mt-1"
+              placeholder="Enter password"
+            />
+          </div>
+
+          <div className="d-grid gap-2 mt-3">
+            {/*button type can't be "SUBMIT" */}
+            <button
+              type="button"
+              onClick={loginHandler}
+              className="btn btn-primary"
+            >
+              Submit
+            </button>
+          </div>
+
+          <p className="forgot-password text-right mt-2">
+            Or login with Google
+          </p>
+
+          <a
+            href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?prompt=select_account&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2Fgoogle%2Fcallback&scope=profile%20email&client_id=890240672665-0ekocfscjdvchcne1ttnmiloit77v1ra.apps.googleusercontent.com&flowName=GeneralOAuthFlow"
+            type="button"
+            className="btn btn-primary"
+          >
+            googleLogin
+          </a>
+
+          {message && (
+            <div className="alert alert-danger" role="alert">
+              {message}
+            </div>
+          )}
         </div>
-      )}
-      {/* Email input   */}
-      <div className="form-group">
-        <label htmlFor="username">Email</label>
-        <input
-          onChange={handleChangeEmail}
-          type="text"
-          className="form-control"
-          name="email"
-        />
-      </div>
-
-      <br />
-      {/* <!-- Password input --> */}
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          onChange={handleChangePassword}
-          type="password"
-          className="form-control"
-          name="password"
-        />
-      </div>
-
-      <br />
-      <div class="text-center">
-        {/* <!-- Login buttons --> */}
-        <button onClick={handleLogin} className="btn btn-primary">
-          <span>Login</span>
-        </button>
-
-        <br />
-        <br />
-        <button type="button" class="btn btn-primary btn-floating mx-1">
-          <i class="fab fa-facebook-f"></i>
-        </button>
-
-        <button type="button" class="btn btn-primary btn-floating mx-1">
-          <i class="fab fa-google"></i>
-        </button>
-
-        <button type="button" class="btn btn-primary btn-floating mx-1">
-          <i class="fab fa-twitter"></i>
-        </button>
-
-        <button type="button" class="btn btn-primary btn-floating mx-1">
-          <i class="fab fa-github"></i>
-        </button>
-      </div>
+      </form>
     </div>
   );
 };

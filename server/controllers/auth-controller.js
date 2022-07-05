@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let email = req.body.email;
+  const email = req.body.email;
   const emailExist = await authRepository.findUser(email);
 
   if (emailExist)
@@ -21,7 +21,6 @@ exports.register = async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
-      role: req.body.role,
     };
     const user = await authRepository.createUser(payload);
     res.status(200).send({
@@ -44,7 +43,6 @@ exports.login = async (req, res) => {
   try {
     let email = req.body.email;
     const user = await authRepository.findUser(email);
-
     if (!user) return res.status(400).send("Email doesn't exist.");
     else
       user.comparePassword(req.body.password, function (err, isMatch) {
@@ -71,7 +69,7 @@ exports.updatePofile = async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    let password = req.body.password;
+    const password = req.body.password;
     const hash = await bcrypt.hash(password, 10);
 
     let payload = {
@@ -80,7 +78,7 @@ exports.updatePofile = async (req, res) => {
       password: hash,
       avatar: req.file.path,
     };
-    //console.log(payload);
+
     const user = await authRepository.updateUser(payload);
     res.status(200).send({
       status: true,
@@ -98,8 +96,8 @@ exports.updatePofile = async (req, res) => {
 
 exports.getPofile = async (req, res) => {
   try {
-    let id = req.params.id;
-    let profile = await authRepository.getUser(id);
+    const id = req.params.id;
+    const profile = await authRepository.getUser(id);
     res.status(200).json({
       status: true,
       data: profile,

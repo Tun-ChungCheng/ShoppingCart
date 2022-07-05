@@ -1,12 +1,11 @@
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
-import CartService from "../services/cart.service";
 
 const NavComponent = (props) => {
-  let { avatar, setAvatar } = props;
   let { currentUser, setCurrentUser } = props;
-  let { cartItemQuantity, setCartItemQuantity } = props;
+  let { cartItemQuantity } = props;
+  let { cartItems, setCartItems } = props;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,52 +14,22 @@ const NavComponent = (props) => {
     navigate("/");
   };
 
-  useEffect(() => {
-    CartService.get()
-      .then((cart) => {
-        let cartItemQuantity = cart.data.data.items.length;
-        setCartItemQuantity(cartItemQuantity);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <div>
       {/* <!-- Navbar --> */}
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar bg-light">
         {/* <!-- Container wrapper --> */}
-        <div class="container-fluid">
-          {/* <!-- Toggle button --> */}
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars"></i>
-          </button>
-
+        <div className="container-fluid">
           {/* <!-- Collapsible wrapper --> */}
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div className="" id="navbarSupportedContent">
             {/* <!-- Navbar brand --> */}
-            <Link class="navbar-brand mt-2 mt-lg-0" to="/">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-                height="20"
-                alt="MDB Logo"
-                loading="lazy"
-              />
+            <Link className="fa-solid fa-cart-shopping" to="/Home">
+              S h o p p i n g C a r t
             </Link>
-
             {/* <!-- Left links --> */}
-            {/* <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+            {/* <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link" href="#">
                   Dashboard
                 </a>
               </li>
@@ -70,61 +39,65 @@ const NavComponent = (props) => {
           {/* <!-- Collapsible wrapper --> */}
 
           {/* <!-- Right elements --> */}
-          <div class="d-flex align-items-center">
+          <div className="d-flex align-items-center ">
             {!currentUser && (
-              <Link type="button" class="btn btn-link px-3 me-2" to="/login">
+              <Link type="button" className=" btn btn-link px-3 me-2" to="/">
                 Login
               </Link>
             )}
             {!currentUser && (
-              <Link type="button" class="btn btn-primary me-3" to="/register">
+              <Link
+                type="button"
+                className=" btn btn-primary me-3"
+                to="/register"
+              >
                 Sign up for free
               </Link>
             )}
           </div>
 
-          <div class="d-flex align-items-center">
+          <div className="d-flex align-items-center">
             {/* <!-- Icon --> */}
             {currentUser && (
-              <Link class="text-reset me-3" to="/cart">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge rounded-pill badge-notification bg-danger">
+              <Link className="text-reset me-3" to="/cart">
+                <i className="fas fa-shopping-cart"></i>
+                <span className="badge rounded-pill badge-notification bg-danger">
                   {cartItemQuantity}
                 </span>
               </Link>
             )}
             {/* <!-- Notifications --> */}
             {currentUser && (
-              <div class="dropdown">
+              <div className="dropdown">
                 <a
-                  class="text-reset me-3 dropdown-toggle hidden-arrow"
+                  className="text-reset me-3 dropdown-toggle hidden-arrow"
                   href="#"
                   id="navbarDropdownMenuLink"
                   role="button"
                   data-mdb-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i class="fas fa-bell"></i>
-                  <span class="badge rounded-pill badge-notification bg-danger">
+                  <i className="fas fa-bell"></i>
+                  <span className="badge rounded-pill badge-notification bg-danger">
                     3
                   </span>
                 </a>
                 <ul
-                  class="dropdown-menu dropdown-menu-end"
+                  className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdownMenuLink"
                 >
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Some news
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Another news
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#">
                       Something else here
                     </a>
                   </li>
@@ -133,40 +106,44 @@ const NavComponent = (props) => {
             )}
             {/* <!-- Avatar --> */}
             {currentUser && (
-              <div class="dropdown">
+              <div className="dropdown">
                 <a
-                  class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                  className="dropdown-toggle d-flex align-items-center hidden-arrow"
                   id="navbarDropdownMenuAvatar"
                   role="button"
                   data-mdb-toggle="dropdown"
                   aria-expanded="false"
                 >
                   <img
-                    src={"http://localhost:8080/" + avatar}
-                    class="rounded-circle"
+                    src={"http://localhost:8080/" + currentUser.user.avatar}
+                    className="rounded-circle"
                     width="30"
                     height="30"
                     style={{ objectFit: "cover" }}
-                    alt="Loading..."
+                    alt="User"
                     loading="lazy"
                   />
                 </a>
                 <ul
-                  class="dropdown-menu dropdown-menu-end"
+                  className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDropdownMenuAvatar"
                 >
                   <li>
-                    <Link class="dropdown-item" to="/profile">
+                    <Link className="dropdown-item" to="/profile">
                       My Profile
                     </Link>
                   </li>
                   <li>
-                    <Link class="dropdown-item" to="/postProduct">
+                    <Link className="dropdown-item" to="/postProduct">
                       Add New Products
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={handleLogout} class="dropdown-item" to="/">
+                    <Link
+                      onClick={handleLogout}
+                      className="dropdown-item"
+                      to="/"
+                    >
                       Logout
                     </Link>
                   </li>

@@ -1,39 +1,39 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/product";
+const API_URL = "http://localhost:8080/api/product/";
+
+function getToken() {
+  let token;
+  if (localStorage.getItem("user")) {
+    token = JSON.parse(localStorage.getItem("user")).token;
+  } else {
+    token = "";
+  }
+  return token;
+}
 
 class ProductService {
   post(payload) {
-    let token;
-    if (localStorage.getItem("user")) {
-      token = JSON.parse(localStorage.getItem("user")).token;
-    } else {
-      token = "";
-    }
-    console.log("service");
-    for (let item of payload) {
-      console.log(item[0], item[1]);
-    }
     return axios.post(API_URL, payload, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
-        Authorization: token,
+        Authorization: getToken(),
       },
     });
   }
 
   get() {
-    let token;
-    if (localStorage.getItem("user")) {
-      token = JSON.parse(localStorage.getItem("user")).token;
-    } else {
-      token = "";
-    }
-
     return axios.get(API_URL, {
       headers: {
-        Authorization: token,
+        Authorization: getToken(),
+      },
+    });
+  }
+
+  delete(id) {
+    return axios.delete(API_URL + id, {
+      headers: {
+        Authorization: getToken(),
       },
     });
   }
