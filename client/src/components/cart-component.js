@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
@@ -8,7 +8,8 @@ const CartComponent = (props) => {
   let { currentUser } = props;
   let { cartItemQuantity, setCartItemQuantity } = props;
   let { cartItems, setCartItems } = props;
-  let { subTotal, setSubTotal } = props;
+  let { subTotal } = props;
+  let { setRenderHelper } = props;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,48 +18,41 @@ const CartComponent = (props) => {
     }
   });
 
-  const deleteFromCartHandler = (e) => {
-    const targetId = e.target.id;
-    console.log(targetId);
-    CartService.delete(targetId).catch((error) => {
+  const deleteFromCart = (target) => {
+    const productId = cartItems[target]._id;
+    setCartItems(
+      (cartItems = cartItems.filter((item) => item._id !== productId))
+    );
+    CartService.delete(productId).catch((error) => {
       console.log(error);
     });
-    CartService.get().then((cart) => {
-      const cartItems = cart.data.data.items;
-      const cartItemQuantity = cart.data.data.items.length;
-      const subTotal = cart.data.data.subTotal;
-      setCartItems(cartItems);
-      setCartItemQuantity(cartItemQuantity);
-      setSubTotal(subTotal);
-    });
+    setRenderHelper(true);
   };
 
-  const addQuantityHandler = (target) => {
+  const incrementQuantity = (target) => {
     setCartItems(
       produce(cartItems, (draft) => {
         draft[target].quantity++;
-        subTotal += draft[target].price;
-        setSubTotal(subTotal);
       })
     );
     const productId = cartItems[target].productId._id;
     CartService.post(productId, 1).catch((err) => {
       console.log(err);
     });
+    setRenderHelper(true);
   };
 
-  const substractQuantityHandler = (target) => {
+  const decrementQuantity = (target) => {
     setCartItems(
       produce(cartItems, (draft) => {
         draft[target].quantity--;
-        subTotal -= draft[target].price;
-        setSubTotal(subTotal);
       })
     );
     const productId = cartItems[target].productId._id;
     CartService.post(productId, -1).catch((err) => {
       console.log(err);
     });
+    setRenderHelper(true);
   };
 
   return (
@@ -88,7 +82,7 @@ const CartComponent = (props) => {
                           )}
                         </div>
                       </div>
-
+                      {/* item.quantity > 0 && */}
                       {cartItemQuantity > 0 &&
                         cartItems.map((item, idx) => (
                           <div key={item._id} className="card mb-3">
@@ -119,9 +113,7 @@ const CartComponent = (props) => {
                                     <button
                                       type="button"
                                       className="btn btn-primary"
-                                      onClick={() =>
-                                        substractQuantityHandler(idx)
-                                      }
+                                      onClick={() => decrementQuantity(idx)}
                                     >
                                       -
                                     </button>
@@ -136,20 +128,17 @@ const CartComponent = (props) => {
                                   <button
                                     type="button"
                                     className="btn btn-primary"
-                                    onClick={() => addQuantityHandler(idx)}
+                                    onClick={() => incrementQuantity(idx)}
                                   >
                                     +
                                   </button>
 
                                   <div style={{ width: "80px" }}>
-                                    <h5 className="mb-0">
-                                      ${item.price * item.quantity}
-                                    </h5>
+                                    <h5 className="mb-0">${item.total}</h5>
                                   </div>
                                   <div style={{ color: "#cecece" }}>
                                     <i
-                                      id={item._id}
-                                      onClick={deleteFromCartHandler}
+                                      onClick={() => deleteFromCart(idx)}
                                       className="fas fa-trash-alt"
                                     ></i>
                                   </div>
@@ -203,7 +192,7 @@ const CartComponent = (props) => {
                             <div className="form-outline form-white mb-4">
                               <input
                                 type="text"
-                                id="typeText"
+                                // id="typeText"
                                 className="form-control form-control-lg"
                                 siez="17"
                                 placeholder="1234 5678 9012 3457"

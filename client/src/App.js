@@ -20,10 +20,10 @@ function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   let [avatar, setAvatar] = useState("");
   let [productData, setProductData] = useState([]);
-  // let [productQuantity, setProductQuantity] = useState(0);
   let [cartItemQuantity, setCartItemQuantity] = useState(0);
   let [cartItems, setCartItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
+  let [renderHelper, setRenderHelper] = useState(true);
 
   useEffect(() => {
     if (currentUser) {
@@ -43,7 +43,7 @@ function App() {
     if (currentUser) {
       ProductService.get()
         .then((products) => {
-          let productData = products.data.data;
+          const productData = products.data.data;
           setProductData(productData);
         })
         .catch((error) => {
@@ -53,19 +53,22 @@ function App() {
   }, []);
 
   useEffect(() => {
-    CartService.get()
-      .then((cart) => {
-        const cartItemQuantity = cart.data.data.items.length;
-        const cartItems = cart.data.data.items;
-        const subTotal = cart.data.data.subTotal;
-        setCartItemQuantity(cartItemQuantity);
-        setCartItems(cartItems);
-        setSubTotal(subTotal);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    setTimeout(() => {
+      CartService.get()
+        .then((cart) => {
+          const cartItemQuantity = cart.data.data.items.length;
+          const cartItems = cart.data.data.items;
+          const subTotal = cart.data.data.subTotal;
+          setCartItemQuantity(cartItemQuantity);
+          setCartItems(cartItems);
+          setSubTotal(subTotal);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setRenderHelper(false);
+    }, 100);
+  }, [cartItemQuantity, renderHelper]);
 
   return (
     <div>
@@ -130,6 +133,7 @@ function App() {
               setCartItems={setCartItems}
               subTotal={subTotal}
               setSubTotal={setSubTotal}
+              setRenderHelper={setRenderHelper}
             />
           }
         />

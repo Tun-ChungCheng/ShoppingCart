@@ -13,7 +13,7 @@ const HomeComponent = (props) => {
     if (!currentUser) {
       navigate("/");
     }
-  }, []);
+  });
 
   const addToCartHandler = (e) => {
     CartService.post(e.target.id, 1)
@@ -155,16 +155,17 @@ const HomeComponent = (props) => {
         >
           {productData.map((product) => (
             <div
-              class="card text-center"
               key={product._id}
+              class="card text-center"
               style={{
                 width: "25vh",
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
                 margin: "1rem",
+                overflow: "hidden",
+                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
               }}
             >
               <img
-                class="card-img-top "
+                class="card-img-top"
                 src={"http://localhost:8080/" + product.image}
                 alt="Card image cap"
                 style={{ width: "25vh", height: "28vh", objectFit: "cover" }}
