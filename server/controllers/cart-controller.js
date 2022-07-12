@@ -1,6 +1,7 @@
 const cartRepository = require("../repositories").cartRepository;
 const productRepository = require("../repositories").productRepository;
-const redis = require("../config/cache");
+const { default: mongoose } = require("mongoose");
+// const redis = require("../config/cache");
 
 exports.addItemToCart = async (req, res) => {
   try {
@@ -64,10 +65,7 @@ exports.addItemToCart = async (req, res) => {
           msg: "Invalid request",
         });
       }
-      const cart = await redis.getOrSetCache(`cart`, async () => {
-        let data = await cart.save();
-        return data;
-      });
+      const data = await cart.save();
       res.status(200).json({
         type: "success",
         msg: "Process Successful",
@@ -83,7 +81,7 @@ exports.addItemToCart = async (req, res) => {
             price: productDetails.price,
             image: productDetails.image,
             seller: productDetails.seller,
-            total: parseInt(quantity * productDetails.price),
+            total: parseInt(quantity * productDetails.price, 10),
           },
         ],
         subTotal: parseInt(quantity * productDetails.price),
@@ -107,20 +105,20 @@ exports.addItemToCart = async (req, res) => {
 
 exports.getCart = async (req, res) => {
   try {
-    const cart = await redis.getOrSetCache(`cart`, async () => {
-      let data = await cartRepository.cart();
-      if (!data) {
-        const cartData = {
-          items: [],
-          subTotal: 0,
-        };
-        data = await cartRepository.addItem(cartData);
-      }
-      return data;
-    });
+    // const cart = await redis.getOrSetCache(`cart`, async () => {
+    let data = await cartRepository.cart();
+    if (!data) {
+      const cartData = {
+        items: [],
+        subTotal: 0,
+      };
+      data = await cartRepository.addItem(cartData);
+    }
+    //   return data;
+    // });
     res.status(200).json({
       status: true,
-      data: cart,
+      data: data,
     });
   } catch (err) {
     console.log(err);

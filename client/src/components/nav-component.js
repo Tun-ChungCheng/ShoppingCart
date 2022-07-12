@@ -1,10 +1,17 @@
 import { React } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+/***** Service *****/
 import AuthService from "../services/auth.service";
+
+/***** Component *****/
+import Search from "./search-component";
 
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let { cartItemQuantity } = props;
+  let { searchContent, setSearchContent } = props;
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,19 +35,7 @@ const NavComponent = (props) => {
           </div>
           {/* <!-- Collapsible wrapper --> */}
           {/* <!-- Light elements --> */}
-          {currentUser && (
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-3"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-          )}
+          {currentUser && <Search setSearchContent={setSearchContent} />}
           {/* <!-- Right elements --> */}
           {!currentUser && (
             <div className="d-flex align-items-center">

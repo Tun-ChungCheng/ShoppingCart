@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const footerComponent = () => {
   return (
@@ -9,31 +10,12 @@ const footerComponent = () => {
         <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
           {/* <!-- Left --> */}
           <div className="me-5 d-none d-lg-block">
-            <span>Get connected with us on social networks:</span>
+            <span></span>
           </div>
           {/* <!-- Left --> */}
 
           {/* <!-- Right --> */}
-          <div>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-facebook-f"></i>
-            </a>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-google"></i>
-            </a>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-linkedin"></i>
-            </a>
-            <a href="" className="me-4 text-reset">
-              <i className="fab fa-github"></i>
-            </a>
-          </div>
+          <div></div>
           {/* <!-- Right --> */}
         </section>
         {/* <!-- Section: Social media --> */}
@@ -62,24 +44,16 @@ const footerComponent = () => {
                 {/* <!-- Links --> */}
                 <h6 className="text-uppercase fw-bold mb-4">Build with</h6>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Node.js
-                  </a>
+                  <a className="text-reset">Node.js</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Express.js
-                  </a>
+                  <a className="text-reset">Express.js</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    MongoDB
-                  </a>
+                  <a className="text-reset">MongoDB</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    React
-                  </a>
+                  <a className="text-reset">React</a>
                 </p>
               </div>
               {/* <!-- Grid column --> */}
@@ -89,24 +63,24 @@ const footerComponent = () => {
                 {/* <!-- Links --> */}
                 <h6 className="text-uppercase fw-bold mb-4">Pages</h6>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Pricing
-                  </a>
+                  <Link to="/home" className="text-reset">
+                    Home
+                  </Link>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Settings
-                  </a>
+                  <Link to="/cart" className="text-reset">
+                    Cart
+                  </Link>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Orders
-                  </a>
+                  <Link to="/addProduct" className="text-reset">
+                    Add product
+                  </Link>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Help
-                  </a>
+                  <Link to="/profile" className="text-reset">
+                    Profile
+                  </Link>
                 </p>
               </div>
               {/* <!-- Grid column --> */}
@@ -116,17 +90,17 @@ const footerComponent = () => {
                 {/* <!-- Links --> */}
                 <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                 <p>
-                  <i className="fas fa-home me-3"></i> New York, NY 10012, US
+                  <i className="fas fa-home me-3"></i> Taichung, Taiwan
                 </p>
                 <p>
-                  <i className="fas fa-envelope me-3"></i>
-                  info@example.com
+                  <i className="fas fa-envelope me-3"></i> dunz.zheng@gmail.com
                 </p>
                 <p>
-                  <i className="fas fa-phone me-3"></i> + 01 234 567 88
+                  <i className="fas fa-phone me-3"></i> (+886)906770035
                 </p>
                 <p>
-                  <i className="fas fa-print me-3"></i> + 01 234 567 89
+                  <i className="fab fa-github me-3"></i>{" "}
+                  github.com/Tun-ChungCheng
                 </p>
               </div>
               {/* <!-- Grid column --> */}
@@ -141,10 +115,7 @@ const footerComponent = () => {
           className="text-center p-4"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
         >
-          © 2021 Copyright:
-          <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
-            MDBootstrap.com
-          </a>
+          © 2021 Copyright <a className="text-reset fw-bold">Ian Cheng</a>
         </div>
         {/* <!-- Copyright --> */}
       </footer>

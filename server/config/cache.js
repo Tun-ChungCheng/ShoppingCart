@@ -8,13 +8,14 @@ const redisClient = redis.createClient({
 
 redisClient.on("connect", () => {
   console.log("Connect to Redis Cloud sucessfully.");
-  redisClient.set("Programmer", "Ian Cheng");
+  redisClient.set("cart", "123");
 });
 
 function getOrSetCache(key, cb) {
   return new Promise((resolve, reject) => {
     redisClient.get(key, async (error, data) => {
       if (error) return reject(error);
+      console.log(data);
       if (data != null) return resolve(JSON.parse(data));
       const freshData = await cb();
       redisClient.set(key, JSON.stringify(freshData));

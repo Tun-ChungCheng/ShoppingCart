@@ -27,6 +27,7 @@ function App() {
   let [cartItems, setCartItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
   let [renderHelper, setRenderHelper] = useState(true);
+  let [searchContent, setSearchContent] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,8 +38,8 @@ function App() {
           const avatar = user.data.data.avatar;
           setAvatar(avatar);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
     } else {
       navigate("/");
@@ -52,8 +53,8 @@ function App() {
           const productData = products.data.data;
           setProductData(productData);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
       setRenderHelper(false);
     }
@@ -62,7 +63,6 @@ function App() {
   useEffect(() => {
     CartService.get()
       .then((cart) => {
-        console.log(cart, "das");
         const cartItemQuantity = cart.data.data.items.length;
         const cartItems = cart.data.data.items;
         const subTotal = cart.data.data.subTotal;
@@ -87,6 +87,8 @@ function App() {
         setCartItemQuantity={setCartItemQuantity}
         cartItems={cartItems}
         setCartItems={setCartItems}
+        searchContent={searchContent}
+        setSearchContent={setSearchContent}
       />
       <Routes>
         <Route
@@ -100,6 +102,8 @@ function App() {
               productData={productData}
               setProductData={setProductData}
               setRenderHelper={setRenderHelper}
+              searchContent={searchContent}
+              setSearchContent={setSearchContent}
             />
           }
         />
