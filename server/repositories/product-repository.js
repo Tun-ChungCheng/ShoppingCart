@@ -6,18 +6,12 @@ exports.createProduct = async (payload) => {
 };
 
 exports.products = async () => {
-  const products = await Product.find().populate("seller", [
-    "username",
-    "email",
-  ]);
+  const products = await Product.find();
   return products;
 };
 
 exports.productById = async (id) => {
-  const product = await Product.findById(id).populate("seller", [
-    "username",
-    "email",
-  ]);
+  const product = await Product.findById(id);
   return product;
 };
 

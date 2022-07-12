@@ -5,7 +5,6 @@ import AuthService from "../services/auth.service";
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let { cartItemQuantity } = props;
-  let { cartItems, setCartItems } = props;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -26,26 +25,28 @@ const NavComponent = (props) => {
             <Link className="fa-solid fa-cart-shopping" to="/Home">
               S h o p p i n g C a r t
             </Link>
-            {/* <!-- Left links --> */}
-            {/* <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Dashboard
-                </a>
-              </li>
-              
-            {/* <!-- Left links --> */}
           </div>
           {/* <!-- Collapsible wrapper --> */}
-
+          {/* <!-- Light elements --> */}
+          {currentUser && (
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-3"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          )}
           {/* <!-- Right elements --> */}
-          <div className="d-flex align-items-center ">
-            {!currentUser && (
+          {!currentUser && (
+            <div className="d-flex align-items-center">
               <Link type="button" className=" btn btn-link px-3 me-2" to="/">
                 Login
               </Link>
-            )}
-            {!currentUser && (
               <Link
                 type="button"
                 className=" btn btn-primary me-3"
@@ -53,21 +54,19 @@ const NavComponent = (props) => {
               >
                 Sign up for free
               </Link>
-            )}
-          </div>
-
-          <div className="d-flex align-items-center">
-            {/* <!-- Icon --> */}
-            {currentUser && (
+            </div>
+          )}
+          {/* <!-- Right elements --> */}
+          {currentUser && (
+            <div className="d-flex align-items-center">
+              {/* <!-- Icon --> */}
               <Link className="text-reset me-3" to="/cart">
                 <i className="fas fa-shopping-cart"></i>
                 <span className="badge rounded-pill badge-notification bg-danger">
                   {cartItemQuantity}
                 </span>
               </Link>
-            )}
-            {/* <!-- Notifications --> */}
-            {currentUser && (
+              {/* <!-- Notifications --> */}
               <div className="dropdown">
                 <a
                   className="text-reset me-3 dropdown-toggle hidden-arrow"
@@ -103,9 +102,7 @@ const NavComponent = (props) => {
                   </li>
                 </ul>
               </div>
-            )}
-            {/* <!-- Avatar --> */}
-            {currentUser && (
+              {/* <!-- Avatar --> */}
               <div className="dropdown">
                 <a
                   className="dropdown-toggle d-flex align-items-center hidden-arrow"
@@ -134,7 +131,7 @@ const NavComponent = (props) => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/postProduct">
+                    <Link className="dropdown-item" to="/AddProduct">
                       Add New Products
                     </Link>
                   </li>
@@ -149,8 +146,8 @@ const NavComponent = (props) => {
                   </li>
                 </ul>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           {/* <!-- Right elements --> */}
         </div>
         {/* <!-- Container wrapper --> */}

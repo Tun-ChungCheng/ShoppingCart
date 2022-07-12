@@ -1,58 +1,59 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
 
 const CartComponent = (props) => {
   let { avatar } = props;
-  let { currentUser } = props;
   let { cartItemQuantity, setCartItemQuantity } = props;
   let { cartItems, setCartItems } = props;
-  let { subTotal } = props;
-  let { setRenderHelper } = props;
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!currentUser) {
-      navigate("/login");
-    }
-  });
+  let { subTotal, setSubTotal } = props;
 
   const deleteFromCart = (target) => {
     const productId = cartItems[target]._id;
-    setCartItems(
-      (cartItems = cartItems.filter((item) => item._id !== productId))
-    );
-    CartService.delete(productId).catch((error) => {
-      console.log(error);
-    });
-    setRenderHelper(true);
+    CartService.delete(productId)
+      .then(() => {
+        setCartItems(
+          (cartItems = cartItems.filter((item) => item._id !== productId))
+        );
+        setCartItemQuantity(cartItems.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const incrementQuantity = (target) => {
-    setCartItems(
-      produce(cartItems, (draft) => {
-        draft[target].quantity++;
-      })
-    );
     const productId = cartItems[target].productId._id;
-    CartService.post(productId, 1).catch((err) => {
-      console.log(err);
-    });
-    setRenderHelper(true);
+    CartService.post(productId, 1)
+      .then(() => {
+        setCartItems(
+          produce(cartItems, (draft) => {
+            draft[target].quantity++;
+            draft[target].total += draft[target].price;
+            setSubTotal((subTotal += draft[target].price));
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const decrementQuantity = (target) => {
-    setCartItems(
-      produce(cartItems, (draft) => {
-        draft[target].quantity--;
-      })
-    );
     const productId = cartItems[target].productId._id;
-    CartService.post(productId, -1).catch((err) => {
-      console.log(err);
-    });
-    setRenderHelper(true);
+    CartService.post(productId, -1)
+      .then(() => {
+        setCartItems(
+          produce(cartItems, (draft) => {
+            draft[target].quantity--;
+            draft[target].total -= draft[target].price;
+            setSubTotal((subTotal -= draft[target].price));
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -82,8 +83,7 @@ const CartComponent = (props) => {
                           )}
                         </div>
                       </div>
-                      {/* item.quantity > 0 && */}
-                      {cartItemQuantity > 0 &&
+                      {cartItems &&
                         cartItems.map((item, idx) => (
                           <div key={item._id} className="card mb-3">
                             <div className="card-body">
@@ -148,6 +148,7 @@ const CartComponent = (props) => {
                           </div>
                         ))}
                     </div>
+
                     <div className="col-lg-5">
                       <div className="card bg-primary text-white rounded-3">
                         <div className="card-body">

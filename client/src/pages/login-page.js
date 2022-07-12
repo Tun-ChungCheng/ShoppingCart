@@ -32,16 +32,6 @@ const LoginComponent = (props) => {
       });
   };
 
-  const googleLoginHandler = () => {
-    AuthService.googleLogin()
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
@@ -68,6 +58,7 @@ const LoginComponent = (props) => {
             />
           </div>
 
+          <br />
           <div className="d-grid gap-2 mt-3">
             {/*button type can't be "SUBMIT" */}
             <button
@@ -79,18 +70,7 @@ const LoginComponent = (props) => {
             </button>
           </div>
 
-          <p className="forgot-password text-right mt-2">
-            Or login with Google
-          </p>
-
-          <a
-            href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?prompt=select_account&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2Fgoogle%2Fcallback&scope=profile%20email&client_id=890240672665-0ekocfscjdvchcne1ttnmiloit77v1ra.apps.googleusercontent.com&flowName=GeneralOAuthFlow"
-            type="button"
-            className="btn btn-primary"
-          >
-            googleLogin
-          </a>
-
+          <br />
           {message && (
             <div className="alert alert-danger" role="alert">
               {message}

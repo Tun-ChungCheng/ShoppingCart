@@ -40,7 +40,6 @@ passport.use(
       callbackURL: "http://localhost:8080/api/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
-      console.log(profile);
       User.findOne({ googleID: profile.id }).then((foundUser) => {
         if (foundUser) {
           console.log("User already exsit.");

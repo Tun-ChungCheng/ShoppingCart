@@ -33,7 +33,6 @@ class CartService {
   }
 
   delete(id) {
-    console.log(id, ":))");
     return axios.delete(API_URL + "/" + id, {
       headers: {
         Authorization: getToken(),

@@ -23,6 +23,10 @@ let itemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
     total: {
       type: Number,
       required: true,

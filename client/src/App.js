@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 /***** Page *****/
-import HomeComponent from "./components/home-component";
+import LoginPage from "./pages/login-page";
+import RegisterPage from "./pages/register-page";
+import HomePage from "./pages/home-page";
+import ProfilePage from "./pages/profile-page";
+import CartPage from "./pages/cart-page";
+import AddProductPage from "./pages/addProduct-page";
+import NotFoundPage from "./pages/notFound-page";
+
+/***** Component *****/
 import NavComponent from "./components/nav-component";
-import RegisterComponent from "./components/register-component";
-import LoginComponent from "./components/login-component";
-import ProfileComponent from "./components/profile-component";
-import CartComponent from "./components/cart-component";
-import PostProductComponent from "./components/postProduct-component";
 import FooterComponent from "./components/footer-component";
 
 /***** Service *****/
@@ -24,6 +27,7 @@ function App() {
   let [cartItems, setCartItems] = useState([]);
   let [subTotal, setSubTotal] = useState(0);
   let [renderHelper, setRenderHelper] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser) {
@@ -36,6 +40,8 @@ function App() {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      navigate("/");
     }
   }, [currentUser]);
 
@@ -49,25 +55,25 @@ function App() {
         .catch((error) => {
           console.log(error);
         });
+      setRenderHelper(false);
     }
-  }, []);
+  }, [renderHelper]);
 
   useEffect(() => {
-    setTimeout(() => {
-      CartService.get()
-        .then((cart) => {
-          const cartItemQuantity = cart.data.data.items.length;
-          const cartItems = cart.data.data.items;
-          const subTotal = cart.data.data.subTotal;
-          setCartItemQuantity(cartItemQuantity);
-          setCartItems(cartItems);
-          setSubTotal(subTotal);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      setRenderHelper(false);
-    }, 100);
+    CartService.get()
+      .then((cart) => {
+        console.log(cart, "das");
+        const cartItemQuantity = cart.data.data.items.length;
+        const cartItems = cart.data.data.items;
+        const subTotal = cart.data.data.subTotal;
+        setCartItemQuantity(cartItemQuantity);
+        setCartItems(cartItems);
+        setSubTotal(subTotal);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setRenderHelper(false);
   }, [cartItemQuantity, renderHelper]);
 
   return (
@@ -86,21 +92,22 @@ function App() {
         <Route
           path="/Home"
           element={
-            <HomeComponent
+            <HomePage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
               cartItemQuantity={cartItemQuantity}
               setCartItemQuantity={setCartItemQuantity}
               productData={productData}
               setProductData={setProductData}
+              setRenderHelper={setRenderHelper}
             />
           }
         />
-        <Route path="/register" element={<RegisterComponent />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/"
           element={
-            <LoginComponent
+            <LoginPage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
             />
@@ -109,20 +116,21 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProfileComponent
+            <ProfilePage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
               avatar={avatar}
               setAvatar={setAvatar}
               productData={productData}
               setProductData={setProductData}
+              setRenderHelper={setRenderHelper}
             />
           }
         />
         <Route
           path="/cart"
           element={
-            <CartComponent
+            <CartPage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
               avatar={avatar}
@@ -138,14 +146,16 @@ function App() {
           }
         />
         <Route
-          path="/postProduct"
+          path="/addProduct"
           element={
-            <PostProductComponent
+            <AddProductPage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              setRenderHelper={setRenderHelper}
             />
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <FooterComponent />
     </div>

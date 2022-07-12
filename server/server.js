@@ -13,6 +13,8 @@ const cartRoutes = require("./routes").cart;
 const authRoutes = require("./routes").auth;
 const passport = require("passport");
 require("./config/passport")(passport);
+/* Connect To Redis Cloud */
+require("./config/cache");
 
 /* Connect To Mongo DB Altas */
 mongoose

@@ -3,31 +3,27 @@ import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
 const ProfileComponent = (props) => {
-  let { currentUser, setCurrentUser } = props;
+  let { currentUser } = props;
+  let { setRenderHelper } = props;
   let { avatar, setAvatar } = props;
-  let { productData, setProductData } = props;
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!currentUser) {
-      navigate("/");
-    } else {
-      let id = currentUser.user._id;
-      AuthService.get(id)
-        .then((user) => {
-          let { username, avatar } = user.data.data;
-          setUsername(username);
-          setAvatar(avatar);
-        })
-        .catch((error) => {
-          console.log(error.response);
-          setMessage(error.response.data);
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   let id = currentUser.user._id;
+  //   AuthService.get(id)
+  //     .then((user) => {
+  //       let { username, avatar } = user.data.data;
+  //       setUsername(username);
+  //       setAvatar(avatar);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response);
+  //       setMessage(error.response.data);
+  //     });
+  // }, []);
 
   const handleChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -54,9 +50,9 @@ const ProfileComponent = (props) => {
       .then(() => {
         navigate("/");
       })
-      .catch((error) => {
-        console.log(error.response);
-        setMessage(error.response.data);
+      .catch((err) => {
+        console.log(err.response);
+        setMessage(err.response.data);
       });
   };
 
