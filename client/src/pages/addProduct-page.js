@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import ProductService from "../services/product.service";
 import { useNavigate } from "react-router-dom";
+import { FilePond } from "react-filepond";
 
 const PostCourseComponent = (props) => {
-  let { setRenderHelper } = props;
-  let [name, setName] = useState("");
-  let [image, setImage] = useState();
-  let [price, setPrice] = useState(0);
-  let [description, setDescription] = useState("");
-  let [message, setMessage] = useState("");
+  const { setRenderHelper } = props;
+  const { currentUser } = props;
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+  const [files, setFiles] = useState([]);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChangeName = (e) => {
@@ -19,10 +21,6 @@ const PostCourseComponent = (props) => {
     setPrice(e.target.value);
   };
 
-  const handleChangeImage = (e) => {
-    setImage(e.target.files[0]);
-  };
-
   const handleChangeDescription = (e) => {
     setDescription(e.target.value);
   };
@@ -31,17 +29,18 @@ const PostCourseComponent = (props) => {
     e.preventDefault();
     const payload = new FormData();
     payload.append("name", name);
-    payload.append("image", image);
+    payload.append("image", files[0].file);
     payload.append("price", price);
     payload.append("description", description);
+    payload.append("seller", currentUser.user._id);
     ProductService.post(payload)
       .then(() => {
         setRenderHelper(true);
         navigate("/home");
       })
-      .catch((error) => {
-        console.log(error.response);
-        setMessage(error.response.data);
+      .catch((err) => {
+        console.log(err.response);
+        setMessage(err.response.data);
       });
   };
 
@@ -67,16 +66,6 @@ const PostCourseComponent = (props) => {
             </div>
 
             <div className="form-group mt-3">
-              <label>New Product Image</label>
-              <input
-                type="file"
-                name="image"
-                className="form-control mt-1"
-                onChange={handleChangeImage}
-              />
-            </div>
-
-            <div className="form-group mt-3">
               <label>New Product Price</label>
               <input
                 type="number"
@@ -97,6 +86,16 @@ const PostCourseComponent = (props) => {
               />
             </div>
 
+            <br />
+            <label>New Product Image</label>
+            <FilePond
+              files={files}
+              allowReorder={true}
+              allowMultiple={false}
+              onupdatefiles={setFiles}
+              labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+            />
+
             <div className="d-grid gap-2 mt-3">
               <button className="btn btn-primary">Save</button>
             </div>
@@ -112,65 +111,6 @@ const PostCourseComponent = (props) => {
       </div>
     </div>
   );
-  // <div style={{ padding: "3rem" }}>
-  //   {currentUser && (
-  //     <div className="form-group">
-  //       <form
-  //         onSubmit={postProduct}
-  //         method="post"
-  //         encType="multipart/form-data"
-  //       >
-  //         <label>Product Name</label>
-  //         <input
-  //           type="text"
-  //           name="name"
-  //           className="form-control"
-  //           onChange={handleChangeName}
-  //         />
-  //         <br />
-
-  //         <label>Product Image</label>
-  //         <br />
-  //         <input
-  //           type="file"
-  //           name="image"
-  //           className="form-control"
-  //           onChange={handleChangeImage}
-  //         />
-  //         <br />
-
-  //         <label>Product Price</label>
-  //         <input
-  //           type="number"
-  //           name="price"
-  //           className="form-control"
-  //           onChange={handleChangePrice}
-  //         />
-  //         <br />
-
-  //         <label>Product Description</label>
-  //         <textarea
-  //           rows="8"
-  //           cols="50"
-  //           name="description"
-  //           className="form-control"
-  //           onChange={handleChangeDescription}
-  //         />
-  //         <br />
-
-  //         <button className="btn btn-primary">Submit</button>
-  //         <br />
-  //         <br />
-  //       </form>
-  //       {message && (
-  //         <div className="alert alert-warning" role="alert">
-  //           {message}
-  //         </div>
-  //       )}
-  //     </div>
-  //   )}
-  // </div>
-  // );
 };
 
 export default PostCourseComponent;

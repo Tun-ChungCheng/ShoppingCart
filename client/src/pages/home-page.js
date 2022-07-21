@@ -1,17 +1,12 @@
 import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
-import { useEffect } from "react";
 
 const HomeComponent = (props) => {
   let { productData } = props;
   let { currentUser } = props;
   let { setCartItemQuantity } = props;
   let { searchContent } = props;
-  let { renderHelper, setRenderHelper } = props;
-
-  // useEffect(() => {
-  //   setRenderHelper(true);
-  // }, []);
+  let { setRenderHelper } = props;
 
   const addToCart = (e) => {
     CartService.post(e.target.id, 1)
@@ -64,7 +59,7 @@ const HomeComponent = (props) => {
                   <img
                     className="card-img-top"
                     src={"http://localhost:8080/" + product.image}
-                    alt="Card image cap"
+                    alt="Card cap"
                     style={{
                       width: "25vh",
                       height: "28vh",
@@ -79,7 +74,7 @@ const HomeComponent = (props) => {
                       ${product.price}
                     </strong>
 
-                    {currentUser && currentUser.user._id !== product.seller && (
+                    {currentUser.user._id !== product.seller && (
                       <button
                         id={product._id}
                         onClick={addToCart}
@@ -90,24 +85,14 @@ const HomeComponent = (props) => {
                       </button>
                     )}
                     {currentUser.user._id === product.seller && (
-                      <div class="d-grid gap-1  justify-content-md">
-                        <button
-                          id={product._id}
-                          onClick={deleteProduct}
-                          type="button"
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          id={product._id}
-                          onClick={deleteProduct}
-                          type="button"
-                          className="btn btn-warning"
-                        >
-                          Update
-                        </button>
-                      </div>
+                      <button
+                        id={product._id}
+                        onClick={deleteProduct}
+                        type="button"
+                        className="btn btn-danger"
+                      >
+                        Delete Product
+                      </button>
                     )}
                     <div className="card-text" style={{ fontSize: "10px" }}>
                       {product.description}

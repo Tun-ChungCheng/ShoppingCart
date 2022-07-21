@@ -1,5 +1,5 @@
-const cartRepository = require("../repositories").cartRepository;
-const productRepository = require("../repositories").productRepository;
+const cartRepository = require("../repositories").cart;
+const productRepository = require("../repositories").product;
 const { default: mongoose } = require("mongoose");
 // const redis = require("../config/cache");
 

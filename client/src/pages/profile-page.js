@@ -1,29 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import { FilePond } from "react-filepond";
 
 const ProfileComponent = (props) => {
   let { currentUser } = props;
-  let { setRenderHelper } = props;
   let { avatar, setAvatar } = props;
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
+  const [files, setFiles] = useState([]);
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   let id = currentUser.user._id;
-  //   AuthService.get(id)
-  //     .then((user) => {
-  //       let { username, avatar } = user.data.data;
-  //       setUsername(username);
-  //       setAvatar(avatar);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response);
-  //       setMessage(error.response.data);
-  //     });
-  // }, []);
 
   const handleChangeUsername = (e) => {
     setUsername(e.target.value);
@@ -33,17 +20,13 @@ const ProfileComponent = (props) => {
     setPassword(e.target.value);
   };
 
-  const handleChangeAvatar = (e) => {
-    setAvatar(e.target.files[0]);
-  };
-
   const updatePofileHandler = (e) => {
     e.preventDefault();
 
     const payload = new FormData();
     payload.append("email", currentUser.user.email);
     payload.append("username", username);
-    payload.append("avatar", avatar);
+    payload.append("avatar", files[0].file);
     payload.append("password", password);
 
     AuthService.patch(payload)
@@ -86,15 +69,7 @@ const ProfileComponent = (props) => {
                 onChange={handleChangeUsername}
               />
             </div>
-            <div className="form-group mt-3">
-              <label>New Avatar</label>
-              <input
-                type="file"
-                name="avatar"
-                className="form-control mt-1"
-                onChange={handleChangeAvatar}
-              />
-            </div>
+
             <div className="form-group mt-3">
               <label>New Password</label>
               <input
@@ -105,6 +80,17 @@ const ProfileComponent = (props) => {
                 onChange={handleChangePassword}
               />
             </div>
+
+            <br />
+            <label>New Avatar</label>
+            <FilePond
+              files={files}
+              allowReorder={true}
+              allowMultiple={false}
+              onupdatefiles={setFiles}
+              labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+            />
+
             <div className="d-grid gap-2 mt-3">
               <button className="btn btn-primary">Save</button>
             </div>

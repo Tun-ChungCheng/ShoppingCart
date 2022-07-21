@@ -23,12 +23,7 @@ const productSchema = new mongoose.Schema({
     require: [true, "Please Include the product image."],
   },
   seller: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-  customer: {
-    type: [String],
-    default: [],
+    type: String,
   },
   date: {
     type: Date,

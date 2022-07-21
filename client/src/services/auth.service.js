@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/auth";
+const API_URL = "http://localhost:8080/api/auth/";
 
 function getToken() {
   let token;
@@ -17,11 +17,7 @@ class AuthService {
   }
 
   login(email, password) {
-    return axios.post(API_URL + "/login", { email, password });
-  }
-
-  googleLogin() {
-    return axios.get(API_URL + "/google");
+    return axios.post(API_URL + "login", { email, password });
   }
 
   logout() {
@@ -29,7 +25,7 @@ class AuthService {
   }
 
   register(username, email, password) {
-    return axios.post(API_URL + "/register", {
+    return axios.post(API_URL + "register", {
       username,
       email,
       password,
@@ -47,7 +43,7 @@ class AuthService {
   }
 
   get(id) {
-    return axios.get(API_URL + "/" + id, {
+    return axios.get(API_URL + id, {
       headers: {
         Authorization: getToken(),
       },

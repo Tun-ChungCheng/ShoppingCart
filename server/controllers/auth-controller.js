@@ -2,20 +2,17 @@ const registerValidation = require("../config/validation").registerValidation;
 const loginValidation = require("../config/validation").loginValidation;
 const profileUpdateValidation =
   require("../config/validation").profileUpdateValidation;
-const authRepository = require("../repositories").authRepository;
+const authRepository = require("../repositories").auth;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonWebToken");
 
 exports.register = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
   const email = req.body.email;
   const emailExist = await authRepository.findUser(email);
-
   if (emailExist)
     return res.status(400).send("Email has already been registered.");
-
   try {
     let payload = {
       username: req.body.username,
@@ -39,7 +36,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
   try {
     let email = req.body.email;
     const user = await authRepository.findUser(email);

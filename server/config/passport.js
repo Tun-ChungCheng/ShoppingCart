@@ -1,8 +1,8 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const User = require("../models").userModel;
-const GoogleStrategy = require("passport-google-oauth20");
-const passport = require("passport");
+const User = require("../models").user;
+// const GoogleStrategy = require("passport-google-oauth20");
+// const passport = require("passport");
 
 module.exports = (passport) => {
   let opts = {};
@@ -19,46 +19,46 @@ module.exports = (passport) => {
   );
 };
 
-passport.serializeUser((user, done) => {
-  console.log("Serializing user now.");
-  done(null, user._id);
-});
+// passport.serializeUser((user, done) => {
+//   console.log("Serializing user now.");
+//   done(null, user._id);
+// });
 
-passport.deserializeUser((_id, done) => {
-  console.log("Derializing user now.");
-  User.findById({ _id }).then((user) => {
-    console.log("Found user.");
-    done(null, user);
-  });
-});
+// passport.deserializeUser((_id, done) => {
+//   console.log("Deserializing user now.");
+//   User.findById({ _id }).then((user) => {
+//     console.log("Found user.");
+//     done(null, user);
+//   });
+// });
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8080/api/auth/google/callback",
-    },
-    function (accessToken, refreshToken, profile, done) {
-      User.findOne({ googleID: profile.id }).then((foundUser) => {
-        if (foundUser) {
-          console.log("User already exsit.");
-          done(null, foundUser);
-        } else {
-          new User({
-            username: profile.displayName,
-            googleID: profile.id,
-            thumbnail: profile.photos[0].value,
-            email: profile.emails[0].value,
-            password: "No Need It",
-          })
-            .save()
-            .then((newUser) => {
-              console.log("New user created.");
-              done(null, newUser);
-            });
-        }
-      });
-    }
-  )
-);
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//       callbackURL: "http://localhost:8080/api/auth/google/callback",
+//     },
+//     (accessToken, refreshToken, profile, done) => {
+//       User.findOne({ googleID: profile.id }).then((foundUser) => {
+//         if (foundUser) {
+//           console.log("User already exsit.");
+//           done(null, foundUser);
+//         } else {
+//           new User({
+//             username: profile.displayName,
+//             googleID: profile.id,
+//             avator: profile.photos[0].value,
+//             email: profile.emails[0].value,
+//             password: "No Need It",
+//           })
+//             .save()
+//             .then((newUser) => {
+//               console.log("New user created.");
+//               done(null, newUser);
+//             });
+//         }
+//       });
+//     }
+//   )
+// );

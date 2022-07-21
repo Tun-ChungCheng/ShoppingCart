@@ -1,5 +1,6 @@
 import { React } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { removeCookies } from "react-cookie";
 
 /***** Service *****/
 import AuthService from "../services/auth.service";
@@ -10,14 +11,12 @@ import Search from "./search-component";
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
   let { cartItemQuantity } = props;
-  let { searchContent, setSearchContent } = props;
-
-  const navigate = useNavigate();
+  let { setSearchContent } = props;
 
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
-    navigate("/");
+    removeCookies("user");
   };
 
   return (
@@ -73,7 +72,7 @@ const NavComponent = (props) => {
                 >
                   <i className="fas fa-bell"></i>
                   <span className="badge rounded-pill badge-notification bg-danger">
-                    3
+                    1
                   </span>
                 </a>
                 <ul
@@ -82,17 +81,7 @@ const NavComponent = (props) => {
                 >
                   <li>
                     <a className="dropdown-item" href="#">
-                      Some news
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Another news
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
+                      Hello, World!
                     </a>
                   </li>
                 </ul>

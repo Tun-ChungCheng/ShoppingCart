@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const LoginComponent = (props) => {
-  let { currentUser, setCurrentUser } = props;
+  let { setCurrentUser } = props;
+  let { setRenderHelper } = props;
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -24,11 +24,11 @@ const LoginComponent = (props) => {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
         setCurrentUser(AuthService.getCurrentUser());
-        navigate("/home");
+        setRenderHelper(true);
       })
-      .catch((error) => {
-        console.log(error);
-        setMessage(error.response.data);
+      .catch((err) => {
+        console.log(err);
+        setMessage(err.response.data);
       });
   };
 
@@ -61,13 +61,14 @@ const LoginComponent = (props) => {
           <br />
           <div className="d-grid gap-2 mt-3">
             {/*button type can't be "SUBMIT" */}
-            <button
+            <Link
+              to="/home"
               type="button"
               onClick={loginHandler}
               className="btn btn-primary"
             >
               Submit
-            </button>
+            </Link>
           </div>
 
           <br />

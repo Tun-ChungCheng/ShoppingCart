@@ -1,4 +1,4 @@
-const Cart = require("../models").cartModel;
+const Cart = require("../models").cart;
 
 exports.cart = async () => {
   const carts = await Cart.find().populate({

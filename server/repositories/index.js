@@ -1,5 +1,5 @@
 module.exports = {
-  productRepository: require("./product-repository"),
-  cartRepository: require("./cart-repository"),
-  authRepository: require("./auth-repository"),
+  product: require("./product-repository"),
+  cart: require("./cart-repository"),
+  auth: require("./auth-repository"),
 };

@@ -176,77 +176,6 @@ const CartComponent = (props) => {
                             <i className="fab fa-cc-paypal fa-2x"></i>
                           </a>
 
-                          <form className="mt-4">
-                            <div className="form-outline form-white mb-4">
-                              <input
-                                type="text"
-                                id="typeName"
-                                className="form-control form-control-lg"
-                                siez="17"
-                                placeholder="Cardholder's Name"
-                              />
-                              <label className="form-label" htmlFor="typeName">
-                                Cardholder's Name
-                              </label>
-                            </div>
-
-                            <div className="form-outline form-white mb-4">
-                              <input
-                                type="text"
-                                // id="typeText"
-                                className="form-control form-control-lg"
-                                siez="17"
-                                placeholder="1234 5678 9012 3457"
-                                minLength="19"
-                                maxLength="19"
-                              />
-                              <label className="form-label" htmlFor="typeText">
-                                Card Number
-                              </label>
-                            </div>
-
-                            <div className="row mb-4">
-                              <div className="col-md-6">
-                                <div className="form-outline form-white">
-                                  <input
-                                    type="text"
-                                    id="typeExp"
-                                    className="form-control form-control-lg"
-                                    placeholder="MM/YYYY"
-                                    size="7"
-                                    minLength="7"
-                                    maxLength="7"
-                                  />
-                                  <label
-                                    className="form-label"
-                                    htmlFor="typeExp"
-                                  >
-                                    Expiration
-                                  </label>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-outline form-white">
-                                  <input
-                                    type="password"
-                                    id="typeText"
-                                    className="form-control form-control-lg"
-                                    placeholder="&#9679;&#9679;&#9679;"
-                                    size="1"
-                                    minLength="3"
-                                    maxLength="3"
-                                  />
-                                  <label
-                                    className="form-label"
-                                    htmlFor="typeText"
-                                  >
-                                    Cvv
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-
                           <hr className="my-4" />
 
                           <div className="d-flex justify-content-between">
@@ -263,19 +192,6 @@ const CartComponent = (props) => {
                             <p className="mb-2">Total(Incl. taxes)</p>
                             <p className="mb-2">${subTotal + 20}</p>
                           </div>
-
-                          <button
-                            type="button"
-                            className="btn btn-info btn-block btn-lg"
-                          >
-                            <div className="d-flex justify-content-between">
-                              <span>${subTotal + 20}</span>
-                              <span>
-                                Checkout{" "}
-                                <i className="fas fa-long-arrow-alt-right ms-2"></i>
-                              </span>
-                            </div>
-                          </button>
                         </div>
                       </div>
                     </div>

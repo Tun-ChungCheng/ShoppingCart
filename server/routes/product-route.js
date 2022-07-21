@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const productController = require("../controllers").productController;
+const productController = require("../controllers").product;
 const multerInstance = require("../config/multer");
 
 router.post(

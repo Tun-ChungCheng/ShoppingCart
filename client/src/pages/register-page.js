@@ -85,22 +85,6 @@ const RegisterComponent = () => {
           </div>
 
           <br />
-          <div class="google-btn">
-            <div class="google-icon-wrapper">
-              <img
-                class="google-icon"
-                src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-              />
-            </div>
-            <a
-              class="btn-text"
-              href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?prompt=select_account&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fauth%2Fgoogle%2Fcallback&scope=profile%20email&client_id=890240672665-0ekocfscjdvchcne1ttnmiloit77v1ra.apps.googleusercontent.com&flowName=GeneralOAuthFlow"
-            >
-              <b>Sign up with google</b>
-            </a>
-          </div>
-
-          <br />
           {message && (
             <div className="alert alert-danger" role="alert">
               {message}

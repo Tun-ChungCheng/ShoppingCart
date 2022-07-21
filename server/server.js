@@ -3,16 +3,16 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const dovenv = require("dotenv");
-dovenv.config();
+require("dotenv").config();
 const path = require("path");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes").product;
 const cartRoutes = require("./routes").cart;
 const authRoutes = require("./routes").auth;
+const orderRoutes = require("./routes").order;
 const passport = require("passport");
-require("./config/passport")(passport);
+require("./config/passport");
 /* Connect To Redis Cloud */
 // require("./config/cache");
 
@@ -30,20 +30,19 @@ mongoose
   });
 
 /* Middleware */
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(morgan("dev")); // HTTP request logger middleware
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: false, // true : any type || false : string or array
+    extended: true, // true : any type || false : string or array
   })
 );
 app.use(
   session({
-    secret: process.env.SECRET,
+    secret: process.env.PASSPORT_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
+    saveUninitialized: false,
   })
 );
 app.use(passport.initialize());
@@ -51,12 +50,9 @@ app.use(passport.session());
 
 app.use("/files", express.static(path.join(__dirname, "/files")));
 app.use("/api/auth", authRoutes);
-app.use(
-  "/api/product",
-  passport.authenticate("jwt", { session: false }),
-  productRoutes
-);
+app.use("/api/product", productRoutes); //passport.authenticate("jwt"),
 app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
 
 app.get("/", (req, res) => {
   res.statusCode = 200;
