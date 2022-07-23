@@ -5,11 +5,13 @@
 ## Graphics Interchange Format
 
 ### Part1
+![錄製_2022_07_23_14_16_26_915_Trim](https://user-images.githubusercontent.com/91156531/180593429-cbd2daea-9863-41a8-a5dc-9cf837f19e99.gif)
 
 ### Part2
   
   
 ## Features
+
 <table>
   <tr>
     <th>Category</th>
