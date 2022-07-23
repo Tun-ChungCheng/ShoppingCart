@@ -47,7 +47,7 @@
     <td rowspan="3">Cart</td>
     <td>POST</td>
     <td>/api/cart/</td>
-    <td>Add product to cart or change item quantity in the cart</td>
+    <td>Increase new item into the cart or change item quantity in the cart</td>
   </tr>
   <tr>
     <td>GET</td>
