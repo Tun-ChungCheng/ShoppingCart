@@ -18,67 +18,59 @@
     <th>Description</th>
   </tr>
   <tr>
-    <td>Auth</td>
+    <td rowspan="5">Auth</td>
     <td>POST</td>
     <td>/api/auth/register</td>
     <td>Create a new account with inputting email, password</td>
   </tr>
   <tr>
-    <td>Auth</td>
     <td>POST</td>
     <td>/api/auth/login</td>
     <td>Log in using registered email</td>
   </tr>
   <tr>
-    <td>Auth</td>
     <td>PATCH</td>
     <td>/api/auth/</td>
     <td>Update profile with inputting name, password, and avator</td>
   </tr>
   <tr>
-    <td>Auth</td>
     <td>GET</td>
     <td>/api/auth/:id</td>
     <td>Retrieve user data specified by {id}</td>
   </tr>
   <tr>
-    <td>Auth</td>
     <td>GET</td>
     <td>/api/auth/logout</td>
     <td>Log out of an account</td>
   </tr>
   <tr>
-    <td>Cart</td>
+    <td rowspan="3">Cart</td>
     <td>POST</td>
     <td>/api/cart/</td>
-    <td>Add product to cart</td>
+    <td>Add product to cart or change item quantity in the cart</td>
   </tr>
   <tr>
-    <td>Cart</td>
     <td>GET</td>
     <td>/api/cart/</td>
     <td>Retrieve cart data</td>
   </tr>
   <tr>
-    <td>Cart</td>
     <td>DELETE</td>
     <td>/api/cart/:id</td>
     <td>Delete cart item specified by {id}</td>
   </tr>
   <tr>
-    <td>Product</td>
+    <td rowspan="3">Product</td>
     <td>POST</td>
     <td>/api/product</td>
     <td>Create a new product with inputting name, price, description, and image</td>
   </tr>
   <tr>
-    <td>Product</td>
     <td>GET</td>
     <td>/api/product</td>
     <td>Retrieve all product data</td>
   </tr>
   <tr>
-    <td>Product</td>
     <td>DELETE</td>
     <td>/api/product/:id</td>
     <td>Delete product specified by {id}</td>
