@@ -9,7 +9,8 @@
 
 ### Part2
   
-  
+![錄製_2022_07_23_14_58_52_32_Trim_Trim](https://user-images.githubusercontent.com/91156531/180594758-bae785a5-f664-45c6-8894-8795675dc7c3.gif)
+
 ## Features
 
 <table>
