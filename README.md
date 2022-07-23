@@ -1,7 +1,7 @@
 # shopping-cart
 ## Introduction
-  Develop with ReactJS as front-end framework, and Node.js, MongoDB, Express.js as backend server.
-
+  Develop with ReactJS as front-end framework, and Node.js, MongoDB, Express.js as backend server.<br />
+  User can register/update account, log in/out with Json Web Token, add/delete product, and add/update/delete/checkout items in the cart.
 ## Graphics Interchange Format
 
 ### Part1
