@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const LoginComponent = (props) => {
@@ -8,6 +8,7 @@ const LoginComponent = (props) => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -25,6 +26,7 @@ const LoginComponent = (props) => {
         }
         setCurrentUser(AuthService.getCurrentUser());
         setRenderHelper(true);
+        navigate("/home");
       })
       .catch((err) => {
         console.log(err);
@@ -61,14 +63,13 @@ const LoginComponent = (props) => {
           <br />
           <div className="d-grid gap-2 mt-3">
             {/*button type can't be "SUBMIT" */}
-            <Link
-              to="/home"
+            <button
               type="button"
               onClick={loginHandler}
               className="btn btn-primary"
             >
               Submit
-            </Link>
+            </button>
           </div>
 
           <br />

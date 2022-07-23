@@ -1,11 +1,6 @@
 import { React } from "react";
 import { Link } from "react-router-dom";
-import { removeCookies } from "react-cookie";
-
-/***** Service *****/
 import AuthService from "../services/auth.service";
-
-/***** Component *****/
 import Search from "./search-component";
 
 const NavComponent = (props) => {
@@ -16,7 +11,6 @@ const NavComponent = (props) => {
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
-    removeCookies("user");
   };
 
   return (

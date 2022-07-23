@@ -5,11 +5,10 @@ import { FilePond } from "react-filepond";
 
 const ProfileComponent = (props) => {
   let { currentUser } = props;
-  let { avatar, setAvatar } = props;
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
-  const [files, setFiles] = useState([]);
   let [message, setMessage] = useState("");
+  const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
   const handleChangeUsername = (e) => {

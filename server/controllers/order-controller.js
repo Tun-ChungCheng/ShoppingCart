@@ -1,61 +1,90 @@
 const cartRepository = require("../repositories").cart;
-const paypal = require("@paypal/checkout-server-sdk");
-const Environment =
-  process.env.NODE_ENV === "production"
-    ? paypal.core.LiveEnvironment
-    : paypal.core.SandboxEnvironment;
-const paypalClient = new paypal.core.PayPalHttpClient(
-  new Environment(
-    process.env.PAYPAL_CLIENT_ID,
-    process.env.PAYPAL_CLIENT_SECRET
-  )
-);
+const { createSignature, createLinePayBody } = require("../config/linepay");
+const { LINEPAY_SITE, LINEPAY_VERSION } = process.env;
+const axios = require("axios");
 
 exports.createOrder = async (req, res) => {
   try {
-    const request = new paypal.orders.OrdersCreateRequest();
     const cart = await cartRepository.cart();
-    const total = cart.items
-      .map((item) => item.total)
-      .reduce((acc, next) => acc + next, 0);
-    request.prefer("return=representation");
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "NT",
-            value: Number.parseInt(total, 10),
-            breakdown: {
-              item_total: {
-                currency_code: "NT",
-                value: Number.parseInt(total, 10),
-              },
-            },
-          },
-          items: cart.items.map((item) => {
-            return {
-              name: item.name,
-              unit_amount: {
-                currency_code: "NT",
-                value: Number.parseInt(item.total, 10),
-              },
-              quantity: Number.parseInt(item.quantity, 10),
-            };
-          }),
-        },
-      ],
-    });
+    const packages = [];
+
     cart.items.map((item) => {
-      console.log(item.name);
-      console.log(item.total);
-      console.log(item.quantity);
+      packages.push({
+        id: item.productId.id,
+        amount: item.total,
+        products: [
+          {
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          },
+        ],
+      });
     });
 
-    const order = await paypalClient.execute(request);
-    res.json({ id: order.result.id });
+    const order = {
+      orderId: cart.updatedAt,
+      amount: cart.subTotal,
+      packages: packages,
+    };
+
+    // Build LINE Pay request format
+    const linePayBody = createLinePayBody(order);
+
+    // CreateSignature build encrypt content
+    const uri = "/payments/request";
+    const headers = createSignature(uri, linePayBody);
+
+    // API address
+    const url = `${LINEPAY_SITE}/${LINEPAY_VERSION}${uri}`;
+    const linePayRes = await axios.post(url, linePayBody, { headers });
+
+    // Request success...
+    if (linePayRes?.data?.returnCode === "0000") {
+      res.redirect(linePayRes?.data?.info.paymentUrl.web);
+    } else {
+      res.status(400).send({
+        message: "訂單不存在",
+      });
+    }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err.message });
+    res.end();
+  }
+};
+
+exports.confirmOrder = async (req, res) => {
+  try {
+    const { transactionId } = req.query;
+    const cart = await cartRepository.cart();
+
+    // Build LINE Pay request format
+    const uri = `/payments/${transactionId}/confirm`;
+    const linePayBody = {
+      amount: cart.subTotal,
+      currency: "TWD",
+    };
+
+    // CreateSignature build encrypt content
+    const headers = createSignature(uri, linePayBody);
+
+    // API address
+    const url = `${LINEPAY_SITE}/${LINEPAY_VERSION}${uri}`;
+    const linePayRes = await axios.post(url, linePayBody, { headers });
+    console.log(linePayRes);
+
+    // Request success...
+    if (linePayRes?.data?.returnCode === "0000") {
+      const cart = cartRepository.deleteAll();
+      console.log(cart);
+      res.redirect("http://localhost:3000/cart");
+    } else {
+      res.status(400).send({
+        message: linePayRes,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.end();
   }
 };

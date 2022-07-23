@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/cart";
+const API_URL = "http://localhost:8080/api/cart/";
 
 function getToken() {
   let token;
@@ -33,7 +33,7 @@ class CartService {
   }
 
   delete(id) {
-    return axios.delete(API_URL + "/" + id, {
+    return axios.delete(API_URL + id, {
       headers: {
         Authorization: getToken(),
       },

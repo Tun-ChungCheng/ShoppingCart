@@ -1,10 +1,8 @@
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const Base64 = require("crypto-js/enc-base64");
-
 const {
   LINEPAY_CHANNEL_ID,
   LINEPAY_RETURN_HOST,
-  LINEPAY_SITE,
   LINEPAY_VERSION,
   LINEPAY_CHANNEL_SECRET_KEY,
   LINEPAY_RETURN_CONFIRM_URL,
@@ -40,3 +38,6 @@ function createSignature(uri, linePayBody) {
   };
   return headers;
 }
+
+module.exports.createSignature = createSignature;
+module.exports.createLinePayBody = createLinePayBody;

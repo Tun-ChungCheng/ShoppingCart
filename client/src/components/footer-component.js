@@ -31,11 +31,7 @@ const footerComponent = () => {
                 <h6 className="text-uppercase fw-bold mb-4">
                   <i className="fa-solid fa-cart-shopping"></i>Shopping Cart
                 </h6>
-                <p>
-                  Here you can use rows and columns to organize your footer
-                  content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                  elit.
-                </p>
+                <p>Buy or Sell, By Yourself.</p>
               </div>
               {/* <!-- Grid column --> */}
 

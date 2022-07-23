@@ -4,15 +4,17 @@ const profileUpdateValidation =
   require("../config/validation").profileUpdateValidation;
 const authRepository = require("../repositories").auth;
 const bcrypt = require("bcrypt");
-const jwt = require("jsonWebToken");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   const { error } = registerValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+
   const email = req.body.email;
   const emailExist = await authRepository.findUser(email);
   if (emailExist)
     return res.status(400).send("Email has already been registered.");
+
   try {
     let payload = {
       username: req.body.username,
@@ -36,6 +38,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+
   try {
     let email = req.body.email;
     const user = await authRepository.findUser(email);
@@ -43,6 +46,7 @@ exports.login = async (req, res) => {
     else
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (err) return res.status(400).send(err);
+
         if (isMatch) {
           const tokenObject = { _id: user._id, _email: user.email };
           const token = jwt.sign(tokenObject, process.env.PASSPORT_SECRET);
@@ -67,20 +71,17 @@ exports.updatePofile = async (req, res) => {
   try {
     const password = req.body.password;
     const hash = await bcrypt.hash(password, 10);
-
     let payload = {
       username: req.body.username,
       email: req.body.email,
       password: hash,
       avatar: req.file.path,
     };
-
     const user = await authRepository.updateUser(payload);
     res.status(200).send({
       status: true,
       data: user,
     });
-    console.log(user);
   } catch (err) {
     console.log(err);
     res.status(500).json({

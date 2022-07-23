@@ -50,9 +50,9 @@ app.use(passport.session());
 
 app.use("/files", express.static(path.join(__dirname, "/files")));
 app.use("/api/auth", authRoutes);
-app.use("/api/product", productRoutes); //passport.authenticate("jwt"),
-app.use("/api/cart", cartRoutes);
-app.use("/api/order", orderRoutes);
+app.use("/api/product", productRoutes, passport.authenticate("jwt"));
+app.use("/api/cart", cartRoutes, passport.authenticate("jwt"));
+app.use("/api/order", orderRoutes, passport.authenticate("jwt"));
 
 app.get("/", (req, res) => {
   res.statusCode = 200;

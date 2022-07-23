@@ -3,7 +3,6 @@ import CartService from "../services/cart.service";
 import { produce } from "immer";
 
 const CartComponent = (props) => {
-  let { avatar } = props;
   let { cartItemQuantity, setCartItemQuantity } = props;
   let { cartItems, setCartItems } = props;
   let { subTotal, setSubTotal } = props;
@@ -17,8 +16,8 @@ const CartComponent = (props) => {
         );
         setCartItemQuantity(cartItems.length);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -65,27 +64,29 @@ const CartComponent = (props) => {
               <div className="card">
                 <div className="card-body p-4">
                   <div className="row">
-                    <div className="col-lg-7">
+                    <div className="col-lg-9">
                       <div className="d-flex justify-content-between align-items-center mb-4">
                         <div>
                           {cartItemQuantity > 1 && (
-                            <p className="mb-0">
+                            <h4 className="mb-0">
                               You have {cartItemQuantity} items in your cart
-                            </p>
+                            </h4>
                           )}
                           {cartItemQuantity === 1 && (
-                            <p className="mb-0">
+                            <h4 className="mb-0">
                               You have {cartItemQuantity} item in your cart
-                            </p>
+                            </h4>
                           )}
                           {cartItemQuantity === 0 && (
-                            <p className="mb-0">Your shopping cart is empty</p>
+                            <h4 className="mb-0">
+                              Your shopping cart is empty
+                            </h4>
                           )}
                         </div>
                       </div>
                       {cartItems &&
                         cartItems.map((item, idx) => (
-                          <div key={item._id} className="card mb-3">
+                          <div key={item._id} className="card mb-2">
                             <div className="card-body">
                               <div className="d-flex justify-content-between">
                                 <div className="d-flex flex-row align-items-center">
@@ -97,8 +98,8 @@ const CartComponent = (props) => {
                                       className="img-fluid rounded-3"
                                       alt="Shopping item"
                                       style={{
-                                        width: "65px",
-                                        height: "65px",
+                                        width: "10rem",
+                                        height: "10rem",
                                         objectFit: "cover",
                                       }}
                                     />
@@ -149,52 +150,38 @@ const CartComponent = (props) => {
                         ))}
                     </div>
 
-                    <div className="col-lg-5">
-                      <div className="card bg-primary text-white rounded-3">
-                        <div className="card-body">
-                          <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h5 className="mb-0">Card details</h5>
-                            <img
-                              src={"http://localhost:8080/" + avatar}
-                              className="img-fluid rounded-3"
-                              style={{ width: "100px" }}
-                              alt="Avatar"
-                            />
-                          </div>
+                    {cartItemQuantity !== 0 && (
+                      <div className="col-lg-3">
+                        <div className="card bg-primary text-white rounded-3">
+                          <div className="card-body">
+                            <div className="d-flex justify-content-center align-items-center mb-4">
+                              <p className="mb-0">Subtotal : ${subTotal}</p>
+                            </div>
 
-                          <p className="small mb-2">Card type</p>
-                          <a href="#!" type="submit" className="text-white">
-                            <i className="fab fa-cc-mastercard fa-2x me-2"></i>
-                          </a>
-                          <a href="#!" type="submit" className="text-white">
-                            <i className="fab fa-cc-visa fa-2x me-2"></i>
-                          </a>
-                          <a href="#!" type="submit" className="text-white">
-                            <i className="fab fa-cc-amex fa-2x me-2"></i>
-                          </a>
-                          <a href="#!" type="submit" className="text-white">
-                            <i className="fab fa-cc-paypal fa-2x"></i>
-                          </a>
+                            <hr className="my-4" />
 
-                          <hr className="my-4" />
-
-                          <div className="d-flex justify-content-between">
-                            <p className="mb-2">Subtotal</p>
-                            <p className="mb-2">${subTotal}</p>
-                          </div>
-
-                          <div className="d-flex justify-content-between">
-                            <p className="mb-2">Shipping</p>
-                            <p className="mb-2">$20</p>
-                          </div>
-
-                          <div className="d-flex justify-content-between mb-4">
-                            <p className="mb-2">Total(Incl. taxes)</p>
-                            <p className="mb-2">${subTotal + 20}</p>
+                            <div className="d-flex justify-content-center">
+                              <form
+                                action="http://localhost:8080/api/order/linepay/createOrder"
+                                method="post"
+                              >
+                                <button
+                                  className="btn btn-info"
+                                  type="submit"
+                                  style={{ fontSize: "1rem" }}
+                                >
+                                  Checkout By LINE Pay
+                                  <i
+                                    className="fa-brands fa-line"
+                                    style={{ fontSize: "2rem" }}
+                                  ></i>
+                                </button>
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
