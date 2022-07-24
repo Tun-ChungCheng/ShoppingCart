@@ -1,7 +1,7 @@
 import React from "react";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
-const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/"; //http://localhost:8080/
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 
 const CartComponent = (props) => {
   let { cartItemQuantity, setCartItemQuantity } = props;
@@ -105,7 +105,6 @@ const CartComponent = (props) => {
                                   </div>
                                   <div className="ms-3">
                                     <h5>{item.name}</h5>
-                                    {/* <p className="small mb-0">256GB, Navy Blue</p> */}
                                   </div>
                                 </div>
                                 <div className="d-flex flex-row align-items-center">

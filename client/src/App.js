@@ -8,6 +8,7 @@ import HomePage from "./pages/home-page";
 import ProfilePage from "./pages/profile-page";
 import CartPage from "./pages/cart-page";
 import AddProductPage from "./pages/addProduct-page";
+import Success from "./pages/success-page";
 
 /***** Component *****/
 import NavComponent from "./components/nav-component";
@@ -131,7 +132,9 @@ function App() {
             />
           }
         />
+        <Route path="/success" element={<Success />} />
       </Routes>
+
       <FooterComponent />
     </div>
   );
