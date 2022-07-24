@@ -38,15 +38,15 @@ app.use(
     extended: true, // true : any type || false : string or array
   })
 );
-app.use(
-  session({
-    secret: process.env.PASSPORT_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(
+//   session({
+//     secret: process.env.PASSPORT_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use("/files", express.static(path.join(__dirname, "/files")));
 app.use("/api/auth", authRoutes);
