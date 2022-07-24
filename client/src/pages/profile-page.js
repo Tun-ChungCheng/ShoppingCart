@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { FilePond } from "react-filepond";
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/"; //http://localhost:8080/
 
 const ProfileComponent = (props) => {
   let { currentUser } = props;
@@ -45,7 +46,7 @@ const ProfileComponent = (props) => {
           <h3 className="Auth-form-title">Profile</h3>
           <div className="text-center">
             <img
-              src={"http://localhost:8080/" + currentUser.user.avatar}
+              src={API_URL + currentUser.user.avatar}
               class="rounded-circle mb-3"
               style={{ width: "150px", height: "150px", objectFit: "cover" }}
               alt="User"

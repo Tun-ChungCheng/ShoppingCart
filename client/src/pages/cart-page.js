@@ -1,6 +1,7 @@
 import React from "react";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/api/cart/"; //http://localhost:8080/
 
 const CartComponent = (props) => {
   let { cartItemQuantity, setCartItemQuantity } = props;
@@ -92,9 +93,7 @@ const CartComponent = (props) => {
                                 <div className="d-flex flex-row align-items-center">
                                   <div>
                                     <img
-                                      src={
-                                        "http://localhost:8080/" + item.image
-                                      }
+                                      src={API_URL + item.image}
                                       className="img-fluid rounded-3"
                                       alt="Shopping item"
                                       style={{
@@ -162,7 +161,9 @@ const CartComponent = (props) => {
 
                             <div className="d-flex justify-content-center">
                               <form
-                                action="http://localhost:8080/api/order/linepay/createOrder"
+                                action={
+                                  API_URL + "api/order/linepay/createOrder"
+                                }
                                 method="post"
                               >
                                 <button
