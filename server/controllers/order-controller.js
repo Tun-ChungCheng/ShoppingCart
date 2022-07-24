@@ -77,7 +77,7 @@ exports.confirmOrder = async (req, res) => {
     if (linePayRes?.data?.returnCode === "0000") {
       const cart = cartRepository.deleteAll();
       console.log(cart);
-      res.redirect("http://localhost:3000/cart");
+      res.redirect("https://buy-or-sell-by-yourself.netlify.app/cart"); //http://localhost:3000/cart
     } else {
       res.status(400).send({
         message: linePayRes,
