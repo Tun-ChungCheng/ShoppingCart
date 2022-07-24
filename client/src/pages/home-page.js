@@ -1,6 +1,6 @@
 import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
-const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/"; //http://localhost:8080/
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 
 const HomeComponent = (props) => {
   let { productData } = props;
@@ -15,8 +15,8 @@ const HomeComponent = (props) => {
         let cartItemQuantity = cart.data.data.items.length;
         setCartItemQuantity(cartItemQuantity);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -27,8 +27,8 @@ const HomeComponent = (props) => {
         .then((product) => {
           console.log(product);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
       setRenderHelper(true);
     }

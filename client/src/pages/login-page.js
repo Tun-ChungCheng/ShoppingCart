@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const LoginComponent = (props) => {
-  let { setCurrentUser } = props;
+  let { currentUser, setCurrentUser } = props;
   let { setRenderHelper } = props;
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) navigate("/home");
+  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
