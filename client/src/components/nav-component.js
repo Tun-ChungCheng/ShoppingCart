@@ -2,6 +2,7 @@ import { React } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import Search from "./search-component";
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/"; //http://localhost:8080/
 
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
@@ -90,7 +91,7 @@ const NavComponent = (props) => {
                   aria-expanded="false"
                 >
                   <img
-                    src={"http://localhost:8080/" + currentUser.user.avatar}
+                    src={API_URL + currentUser.user.avatar}
                     className="rounded-circle"
                     width="30"
                     height="30"
