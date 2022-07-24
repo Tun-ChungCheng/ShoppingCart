@@ -4,7 +4,7 @@ import AuthService from "../services/auth.service";
 
 const LoginComponent = (props) => {
   let { currentUser, setCurrentUser } = props;
-  let { setRenderHelper } = props;
+  let { renderHelper, setRenderHelper } = props;
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [message, setMessage] = useState("");
@@ -12,7 +12,7 @@ const LoginComponent = (props) => {
 
   useEffect(() => {
     if (currentUser) navigate("/home");
-  }, []);
+  }, [renderHelper]);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);

@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { FilePond } from "react-filepond";
-const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/"; //http://localhost:8080/
-
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 const ProfileComponent = (props) => {
   let { currentUser } = props;
   let [username, setUsername] = useState("");

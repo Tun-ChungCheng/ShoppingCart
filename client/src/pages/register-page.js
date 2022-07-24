@@ -29,9 +29,9 @@ const RegisterComponent = () => {
         );
         navigate("/");
       })
-      .catch((error) => {
-        console.log(error.response);
-        setMessage(error.response.data);
+      .catch((err) => {
+        console.log(err.response);
+        setMessage(err.response.data);
       });
   };
 
@@ -43,7 +43,6 @@ const RegisterComponent = () => {
           <div className="text-center">
             Already registered?{" "}
             <Link className="link-primary" to="/">
-              {/* onClick={changeAuthMode} */}
               Login
             </Link>
           </div>

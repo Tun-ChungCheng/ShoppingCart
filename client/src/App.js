@@ -99,6 +99,7 @@ function App() {
             <LoginPage
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              renderHelper={renderHelper}
               setRenderHelper={setRenderHelper}
             />
           }
