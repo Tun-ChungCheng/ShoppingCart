@@ -1,7 +1,20 @@
 # shopping-cart
 ## Introduction
-  Develop with ReactJS as front-end framework, and Node.js, MongoDB, Express.js as backend server.<br />
-  User can register/update account, log in/out with Json Web Token, add/delete product, and add/update/delete/checkout items in the cart.
+開發 SPA 網頁，採 React + Node.js Web Restful API 前後端分離的開發模式<br />
+前端：<br />
+●  使用 React Router 路由設定<br />
+●  使用 axios 與後端 Web API 串接<br />
+●  使用 filepond 優化圖片上傳<br />
+●  使用 immer 執行 deep copy 更新 state<br />
+●  部屬 Netlify<br />
+後端：<br />
+●  使用 JSON Web Token 實現 stateless 驗證<br />
+●  使用 joi 驗證輸入資料<br />
+●  使用 multer 上傳圖片<br />
+●  採用 Repository 設計<br />
+●  串接 MongoDB Altas 並使用 ORM<br />
+●  串接 LINE Pay 金流並使用 crypto-js 加密<br />
+●  部屬 Heroku<br />
 ## Graphics Interchange Format
 
 ### Part1
@@ -86,5 +99,6 @@
   </tr>
 </table>
 
+## <a href="https://buy-or-sell-by-yourself.netlify.app">Live Demo</a>
 
 
