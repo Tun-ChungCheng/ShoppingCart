@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/cart/";
+const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/api/cart/"; //"http://localhost:8080/api/cart/";
 
 function getToken() {
   let token;
