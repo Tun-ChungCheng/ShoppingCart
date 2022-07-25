@@ -1,6 +1,6 @@
 import ProductService from "../services/product.service";
 import CartService from "../services/cart.service";
-const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
+// const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 
 const HomeComponent = (props) => {
   let { productData } = props;
@@ -59,7 +59,7 @@ const HomeComponent = (props) => {
                 >
                   <img
                     className="card-img-top"
-                    src={API_URL + product.image}
+                    src={product.image}
                     alt="Card cap"
                     style={{
                       width: "25vh",

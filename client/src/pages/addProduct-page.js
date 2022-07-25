@@ -93,6 +93,7 @@ const PostCourseComponent = (props) => {
               allowReorder={true}
               allowMultiple={false}
               onupdatefiles={setFiles}
+              allowFileEncode={true}
               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
             />
 

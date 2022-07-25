@@ -5,12 +5,11 @@ const Product = require("../models").product;
 exports.createProduct = async (req, res) => {
   const { error } = productValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  console.log(req.body);
   try {
     let payload = {
       name: req.body.name,
       price: req.body.price,
-      image: req.file.path,
+      image: process.env.BASE_PATH + req.file.path,
       description: req.body.description,
       seller: req.body.seller,
     };

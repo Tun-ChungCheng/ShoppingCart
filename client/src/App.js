@@ -124,7 +124,7 @@ function App() {
           }
         />
         <Route
-          path="/addProduct"
+          path="/addproduct"
           element={
             <AddProductPage
               currentUser={currentUser}

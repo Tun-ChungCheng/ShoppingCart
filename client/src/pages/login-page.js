@@ -66,7 +66,6 @@ const LoginComponent = (props) => {
 
           <br />
           <div className="d-grid gap-2 mt-3">
-            {/*button type can't be "SUBMIT" */}
             <button
               type="button"
               onClick={loginHandler}

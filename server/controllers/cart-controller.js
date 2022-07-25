@@ -105,7 +105,6 @@ exports.addItemToCart = async (req, res) => {
 
 exports.getCart = async (req, res) => {
   try {
-    // const cart = await redis.getOrSetCache(`cart`, async () => {
     let data = await cartRepository.cart();
     if (!data) {
       const cartData = {
@@ -114,8 +113,6 @@ exports.getCart = async (req, res) => {
       };
       data = await cartRepository.addItem(cartData);
     }
-    //   return data;
-    // });
     res.status(200).json({
       status: true,
       data: data,

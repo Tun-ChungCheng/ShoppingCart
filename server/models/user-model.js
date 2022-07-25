@@ -24,34 +24,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "files/user-solid.svg",
   },
-  /* For Google Authentication */
-  googleID: {
-    type: String,
-  },
-  thumbnail: {
-    type: String,
-  },
-  /* For Google Authentication */
   date: {
     type: Date,
     default: Date.now,
   },
 });
-
-// Identify Role
-userSchema.methods.isCustomer = function () {
-  return this.role == "customer";
-};
-
-// Identify Role
-userSchema.methods.isSeller = function () {
-  return this.role == "seller";
-};
-
-// Identify Role
-userSchema.methods.isAdmin = function () {
-  return this.role == "admin";
-};
 
 // Mongoose Schema Middleware
 userSchema.pre("save", async function (next) {
