@@ -9,8 +9,7 @@
 ●  部屬 Netlify<br />
 後端：<br />
 ●  使用 JSON Web Token 實現 stateless 驗證<br />
-●  使用 joi 驗證輸入資料<br />
-●  使用 multer 上傳圖片<br />
+●  使用 joi 驗證輸入資料及 multer 上傳圖片<br />
 ●  採用 Repository 設計<br />
 ●  串接 MongoDB Altas 並使用 ORM<br />
 ●  串接 LINE Pay 金流並使用 crypto-js 加密<br />
