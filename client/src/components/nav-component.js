@@ -2,7 +2,6 @@ import { React } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import Search from "./search-component";
-// const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 
 const NavComponent = (props) => {
   let { currentUser, setCurrentUser } = props;

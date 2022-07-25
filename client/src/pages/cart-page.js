@@ -1,7 +1,6 @@
 import React from "react";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
-// const API_URL = "https://ian-cheng-shopping-cart-api.herokuapp.com/";
 
 const CartComponent = (props) => {
   let { cartItemQuantity, setCartItemQuantity } = props;
