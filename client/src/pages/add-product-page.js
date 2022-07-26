@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProductService from "../services/product.service";
 import { useNavigate } from "react-router-dom";
 import { FilePond } from "react-filepond";

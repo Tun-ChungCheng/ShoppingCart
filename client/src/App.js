@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 /***** Page *****/
@@ -7,7 +7,7 @@ import RegisterPage from "./pages/register-page";
 import HomePage from "./pages/home-page";
 import ProfilePage from "./pages/profile-page";
 import CartPage from "./pages/cart-page";
-import AddProductPage from "./pages/addProduct-page";
+import AddProductPage from "./pages/add-product-page";
 
 /***** Component *****/
 import NavComponent from "./components/nav-component";

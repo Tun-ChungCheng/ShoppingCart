@@ -1,5 +1,3 @@
-import React from "react";
-
 const searchComponent = ({ setSearchContent }) => {
   const inputHandler = (e) => {
     setSearchContent(e.target.value);

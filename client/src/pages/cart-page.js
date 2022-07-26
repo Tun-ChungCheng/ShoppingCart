@@ -1,4 +1,3 @@
-import React from "react";
 import CartService from "../services/cart.service";
 import { produce } from "immer";
 
