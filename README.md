@@ -6,14 +6,14 @@
 ●  使用 axios 與後端 Web API 串接<br />
 ●  使用 filepond 優化圖片上傳<br />
 ●  使用 immer 執行 deep copy 更新 state<br />
-●  部屬 Netlify<br />
+●  佈署 Netlify<br />
 後端：<br />
 ●  使用 JSON Web Token 實現 stateless 驗證<br />
 ●  使用 joi 驗證輸入資料及 multer 上傳圖片<br />
 ●  採用 Repository 設計<br />
 ●  串接 MongoDB Altas 並使用 ORM<br />
 ●  串接 LINE Pay 金流並使用 crypto-js 加密<br />
-●  部屬 Heroku<br />
+●  佈署 Heroku<br />
 ## Graphics Interchange Format
 
 ### Part1
